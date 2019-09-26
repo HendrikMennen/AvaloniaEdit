@@ -283,6 +283,12 @@ namespace AvaloniaEdit.Search
             _searchTextBox = e.NameScope.Find<TextBox>("PART_searchTextBox");
             _messageView = e.NameScope.Find<Popup>("PART_MessageView");
             _messageViewContent = e.NameScope.Find<ContentPresenter>("PART_MessageContent");
+
+
+            _searchTextBox.LostFocus += (sender, args) =>
+            {
+                _messageView.IsOpen = false;
+            };
         }
 
         private void ValidateSearchText()
@@ -352,7 +358,7 @@ namespace AvaloniaEdit.Search
                 _textArea.Selection.ReplaceSelectionWithText(ReplacePattern ?? string.Empty);
             }
 
-            UpdateSearch();
+            //UpdateSearch();
         }
 
         public void ReplaceAll()
