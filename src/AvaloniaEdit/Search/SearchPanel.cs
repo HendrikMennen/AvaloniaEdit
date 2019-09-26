@@ -283,12 +283,6 @@ namespace AvaloniaEdit.Search
             _searchTextBox = e.NameScope.Find<TextBox>("PART_searchTextBox");
             _messageView = e.NameScope.Find<Popup>("PART_MessageView");
             _messageViewContent = e.NameScope.Find<ContentPresenter>("PART_MessageContent");
-
-
-            _searchTextBox.LostFocus += (sender, args) =>
-            {
-                _messageView.IsOpen = false;
-            };
         }
 
         private void ValidateSearchText()
@@ -352,13 +346,14 @@ namespace AvaloniaEdit.Search
         {
             if (!IsReplaceMode) return;
 
-            FindNext();
+
             if (!_textArea.Selection.IsEmpty)
             {
                 _textArea.Selection.ReplaceSelectionWithText(ReplacePattern ?? string.Empty);
             }
 
-            //UpdateSearch();
+            //FindNext();
+            UpdateSearch();
         }
 
         public void ReplaceAll()
@@ -402,6 +397,7 @@ namespace AvaloniaEdit.Search
                     if (changeSelection && result.StartOffset >= offset)
                     {
                         SelectResult(result);
+                        Console.WriteLine("TEST");
                         changeSelection = false;
                     }
                     _renderer.CurrentResults.Add(result);
@@ -421,6 +417,8 @@ namespace AvaloniaEdit.Search
             }
 
             _textArea.TextView.InvalidateLayer(KnownLayer.Selection);
+            
+            if(changeSelection) FindNext();
         }
 
         private void SelectResult(TextSegment result)
@@ -459,6 +457,10 @@ namespace AvaloniaEdit.Search
                 case Key.Escape:
                     e.Handled = true;
                     Close();
+                    break;
+
+                case Key.Tab:
+                    e.Handled = true;
                     break;
             }
         }
@@ -528,6 +530,12 @@ namespace AvaloniaEdit.Search
             e.Handled = true;
 
             base.OnGotFocus(e);
+        }
+
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            base.OnLostFocus(e);
+            if (_messageView != null) _messageView.IsOpen = false;
         }
 
         /// <summary>

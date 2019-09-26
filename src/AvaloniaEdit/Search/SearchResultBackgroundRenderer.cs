@@ -32,7 +32,7 @@ namespace AvaloniaEdit.Search
 
         public SearchResultBackgroundRenderer()
         {
-            _markerBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#50bf7e28"));
+            _markerBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#30bf7e28"));
             _markerPen = new Pen(_markerBrush);
         }
 
