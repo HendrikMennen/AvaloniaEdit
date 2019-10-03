@@ -135,10 +135,10 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void CompletionList_InsertionRequested(object sender, EventArgs e)
         {
+            var item = CompletionList.SelectedItem;
             Hide();
             // The window must close before Complete() is called.
-            // If the Complete callback pushes stacked input handlers, we don't want to pop those when the CC window closes.
-            var item = CompletionList.SelectedItem;
+            // If the Complete callback pushes stacked input handlers, we don't want to pop those when the CC window closes.            
             item?.Complete(TextArea, new AnchorSegment(TextArea.Document, StartOffset, EndOffset - StartOffset), e);
         }
 
