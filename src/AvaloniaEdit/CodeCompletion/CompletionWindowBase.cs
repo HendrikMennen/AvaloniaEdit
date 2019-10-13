@@ -29,13 +29,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
-using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform;
-using Avalonia.Controls.Platform;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -376,8 +372,7 @@ namespace AvaloniaEdit.CodeCompletion
 
             var position = _visualLocation - textView.ScrollOffset;
 
-            Host?.ConfigurePosition(textView, PlacementMode.AnchorAndGravity, new Point(position.X, position.Y), Avalonia.Controls.Primitives.PopupPositioning.PopupPositioningEdge.TopLeft, Avalonia.Controls.Primitives.PopupPositioning.PopupPositioningEdge.BottomRight);           
-
+            Host?.ConfigurePosition(textView, PlacementMode.AnchorAndGravity, position, Avalonia.Controls.Primitives.PopupPositioning.PopupPositioningEdge.TopLeft, Avalonia.Controls.Primitives.PopupPositioning.PopupPositioningEdge.BottomRight);           
         }
 
         // TODO: check if needed
