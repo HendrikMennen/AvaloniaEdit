@@ -226,8 +226,8 @@ namespace AvaloniaEdit.CodeCompletion
                 {
                     CompletionList.SelectItem(string.Empty);
 
-                    if (CompletionList.ListBox.ItemCount == 0) IsVisible = false;
-                    else IsVisible = true;
+                    if (CompletionList.ListBox.ItemCount == 0) Hide();
+                    else Show();
                 }
                 return;
             }
@@ -245,8 +245,8 @@ namespace AvaloniaEdit.CodeCompletion
                 {
                     CompletionList.SelectItem(document.GetText(StartOffset, offset - StartOffset));
 
-                    if (CompletionList.ListBox.ItemCount == 0) IsVisible = false;
-                    else IsVisible = true;
+                    if (CompletionList.ListBox.ItemCount == 0) Hide();
+                    else Show();
                 }
             }
         }

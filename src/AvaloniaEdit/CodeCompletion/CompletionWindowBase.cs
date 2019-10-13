@@ -117,7 +117,7 @@ namespace AvaloniaEdit.CodeCompletion
 
         public void Show()
         {
-            Open();
+            IsOpen = true;
             Height = double.NaN;
             MinHeight = 0;
 
@@ -126,7 +126,7 @@ namespace AvaloniaEdit.CodeCompletion
 
         public void Hide()
         {
-            Close();
+            IsOpen = false;
             OnClosed();
         }
 
