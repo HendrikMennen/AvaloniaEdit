@@ -155,7 +155,7 @@ packageVersions.ToList().ForEach(package =>
 
 Information("Setting NuGet package dependencies versions:");
 
-var AvaloniaVersion = "0.8.0";
+var AvaloniaVersion = "0.9.0-preview1";
 
 Information("Package: Avalonia, version: {0}", AvaloniaVersion);
 
@@ -326,7 +326,7 @@ Task("Publish-NetCore")
 
             Information("Publishing: {0}, runtime: {1}", project.Name, runtime);
             DotNetCorePublish(project.Path, new DotNetCorePublishSettings {
-                Framework = "netcoreapp2.1",
+                Framework = "netcoreapp3.0",
                 Configuration = configuration,
                 Runtime = runtime,
                 OutputDirectory = outputDir.FullPath
