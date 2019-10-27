@@ -72,7 +72,6 @@ namespace AvaloniaEdit.Editing
             var renderSize = Bounds.Size;
             if (textView != null && textView.VisualLinesValid)
             {
-                EmSize = GetValue(TextBlock.FontSizeProperty);
                 var foreground = GetValue(TemplatedControl.ForegroundProperty);
                 foreach (var line in textView.VisualLines)
                 {
@@ -83,7 +82,8 @@ namespace AvaloniaEdit.Editing
                         Typeface, EmSize, foreground
                     );
                     var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop);
-                    drawingContext.DrawText(foreground, new Point(renderSize.Width - text.Bounds.Width, y - textView.VerticalOffset), text);
+                    drawingContext.DrawText(foreground, new Point(renderSize.Width - text.Bounds.Width, y - textView.VerticalOffset),
+                        text);
                 }
             }
         }
