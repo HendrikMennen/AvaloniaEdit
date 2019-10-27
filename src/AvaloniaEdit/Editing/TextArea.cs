@@ -114,7 +114,7 @@ namespace AvaloniaEdit.Editing
 
             if (e.NameScope.Find("PART_CP") is ContentPresenter contentPresenter)
             {
-                contentPresenter.Content = TextView;          
+                contentPresenter.Content = TextView;
             }
         }
 

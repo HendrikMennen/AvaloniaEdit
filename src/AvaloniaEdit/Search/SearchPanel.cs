@@ -43,11 +43,7 @@ namespace AvaloniaEdit.Search
         private TextDocument _currentDocument;
         private SearchResultBackgroundRenderer _renderer;
         private TextBox _searchTextBox;
-
-        /// <summary>
-        /// Don't allow replace if this is true
-        /// </summary>
-        public bool TextEditorReadOnly { get; set; }
+        private TextEditor _textEditor { get; set; }
 
         #region DependencyProperties
         /// <summary>
@@ -116,7 +112,7 @@ namespace AvaloniaEdit.Search
         public bool IsReplaceMode
         {
             get => GetValue(IsReplaceModeProperty);
-            set => SetValue(IsReplaceModeProperty, value);
+            set => SetValue(IsReplaceModeProperty, _textEditor?.IsReadOnly ?? false ? false : value);
         }
 
         public static readonly AvaloniaProperty<string> ReplacePatternProperty =
@@ -195,23 +191,29 @@ namespace AvaloniaEdit.Search
         }
 
         /// <summary>
-        /// Creates a SearchPanel and installs it to the TextArea.
+        /// Creates a SearchPanel and installs it to the TextEditor's TextArea.
         /// </summary>
+        /// <remarks>This is a convenience wrapper.</remarks>
         public static SearchPanel Install(TextEditor editor)
         {
-            var textArea = editor.TextArea;
+            if (editor == null) throw new ArgumentNullException(nameof(editor));
+            SearchPanel searchPanel = Install(editor.TextArea);
+            searchPanel._textEditor = editor;
+            return searchPanel;
+        }
+
+        /// <summary>
+        /// Creates a SearchPanel and installs it to the TextArea.
+        /// </summary>
+        public static SearchPanel Install(TextArea textArea)
+        {
             if (textArea == null) throw new ArgumentNullException(nameof(textArea));
-
             var panel = new SearchPanel();
-
-            //Subscribe to readonly property
-            editor.GetObservable(TextEditor.IsReadOnlyProperty).Subscribe(x => panel.TextEditorReadOnly = x);
-
             panel.AttachInternal(textArea);
             panel._handler = new SearchInputHandler(textArea, panel);
             textArea.DefaultInputHandler.NestedInputHandlers.Add(panel._handler);
             ((ISetLogicalParent)panel).SetParent(textArea);
-        
+
             return panel;
         }
 
@@ -322,7 +324,7 @@ namespace AvaloniaEdit.Search
             if (result != null)
             {
                 SelectResult(result);
-            }            
+            }
         }
 
         /// <summary>
