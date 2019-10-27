@@ -1634,7 +1634,8 @@ namespace AvaloniaEdit.Rendering
                 //Cursor = Cursor.Default; ISSUE : Cursor gets set to Default but not back to IBeam
                 _currentHoveredElement = element;
             }
-            element?.OnQueryCursor(e);
+
+            Cursor = element?.OnQueryCursor(e) ?? new Cursor(StandardCursorType.Ibeam);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)

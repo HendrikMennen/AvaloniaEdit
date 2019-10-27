@@ -237,12 +237,10 @@ namespace AvaloniaEdit.Rendering
 		/// </summary>
 		public virtual bool HandlesLineBorders => false;
 
-	    /// <summary>
-		/// Queries the cursor over the visual line element.
-		/// </summary>
-		protected internal virtual void OnQueryCursor(PointerEventArgs e)
-		{
-		}
+        /// <summary>
+        /// Queries the cursor over the visual line element.
+        /// </summary>
+        protected internal virtual Cursor OnQueryCursor(PointerEventArgs e) => new Cursor(StandardCursorType.Ibeam);
 		
 		/// <summary>
 		/// Allows the visual line element to handle a pointer event.

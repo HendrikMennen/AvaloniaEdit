@@ -83,16 +83,14 @@ namespace AvaloniaEdit.Rendering
         }
 
         /// <inheritdoc/>
-        protected internal override void OnQueryCursor(PointerEventArgs e)
+        protected internal override Cursor OnQueryCursor(PointerEventArgs e)
         {
             if (LinkIsClickable(e.KeyModifiers))
             {
-                if(e.Source is InputElement inputElement)
-                {
-                    inputElement.Cursor = new Cursor(StandardCursorType.Hand);
-                }
                 e.Handled = true;
+                return new Cursor(StandardCursorType.Hand);                
             }
+            return base.OnQueryCursor(e);
         }
 
         /// <inheritdoc/>
