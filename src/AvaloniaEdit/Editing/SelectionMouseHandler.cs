@@ -419,7 +419,6 @@ namespace AvaloniaEdit.Editing
                 var oldPosition = TextArea.Caret.Position;
                 SetCaretOffsetToMousePosition(e);
 
-
                 if (!shift)
                 {
                     TextArea.ClearSelection();
@@ -463,9 +462,14 @@ namespace AvaloniaEdit.Editing
                             _mode = SelectionMode.WholeLine;
                             startWord = GetLineAtMousePosition(e);
                         }
-                        else
+                        else if(e.ClickCount == 2)
                         {
-                           _mode = SelectionMode.WholeWord;
+                            _mode = SelectionMode.WholeWord;
+                            startWord = GetWordAtMousePosition(e);
+                        }
+                        else if(e.ClickCount == 1)
+                        {
+                           _mode = SelectionMode.None;
                             startWord = GetWordAtMousePosition(e);                           
                         }
                         
@@ -489,8 +493,11 @@ namespace AvaloniaEdit.Editing
                         }
                         else
                         {
-                            TextArea.Selection = Selection.Create(TextArea, startWord.Offset, startWord.EndOffset);
-                            _startWord = new AnchorSegment(TextArea.Document, startWord.Offset, startWord.Length);
+                            if (_mode != SelectionMode.None)
+                            {
+                                TextArea.Selection = Selection.Create(TextArea, startWord.Offset, startWord.EndOffset);
+                                _startWord = new AnchorSegment(TextArea.Document, startWord.Offset, startWord.Length);
+                            }
                         }
                     }
                 }
