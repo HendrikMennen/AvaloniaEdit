@@ -392,8 +392,6 @@ namespace AvaloniaEdit.Editing
 
         private void TextArea_MouseLeftButtonDown(object sender, PointerPressedEventArgs e)
         {
-            TextArea.Cursor = Cursor.Parse("IBeam");           
-
             var pointer = e.GetPointerPoint(TextArea);
 
             _mode = SelectionMode.None;
