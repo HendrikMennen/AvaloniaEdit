@@ -20,7 +20,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -53,7 +52,6 @@ namespace AvaloniaEdit.Editing
         private const int AdditionalVerticalScrollAmount = 2;
 
         private ILogicalScrollable _logicalScrollable;
-        private EventHandler _scrollInvalidated;
 
         #region Constructor
         static TextArea()
@@ -236,7 +234,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// Document property.
         /// </summary>
-        public static readonly StyledProperty<TextDocument> DocumentProperty
+        public static readonly AvaloniaProperty<TextDocument> DocumentProperty
             = TextView.DocumentProperty.AddOwner<TextArea>();
 
         /// <summary>
@@ -288,7 +286,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// Options property.
         /// </summary>
-        public static readonly StyledProperty<TextEditorOptions> OptionsProperty
+        public static readonly AvaloniaProperty<TextEditorOptions> OptionsProperty
             = TextView.OptionsProperty.AddOwner<TextArea>();
 
         /// <summary>
@@ -479,7 +477,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// The <see cref="SelectionBrush"/> property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> SelectionBrushProperty =
+        public static readonly AvaloniaProperty<IBrush> SelectionBrushProperty =
             AvaloniaProperty.Register<TextArea, IBrush>("SelectionBrush");
 
         /// <summary>
@@ -494,7 +492,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// The <see cref="SelectionForeground"/> property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> SelectionForegroundProperty =
+        public static readonly AvaloniaProperty<IBrush> SelectionForegroundProperty =
             AvaloniaProperty.Register<TextArea, IBrush>("SelectionForeground");
 
         /// <summary>
@@ -509,7 +507,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// The <see cref="SelectionBorder"/> property.
         /// </summary>
-        public static readonly StyledProperty<Pen> SelectionBorderProperty =
+        public static readonly AvaloniaProperty<Pen> SelectionBorderProperty =
             AvaloniaProperty.Register<TextArea, Pen>("SelectionBorder");
 
         /// <summary>
@@ -524,7 +522,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// The <see cref="SelectionCornerRadius"/> property.
         /// </summary>
-        public static readonly StyledProperty<double> SelectionCornerRadiusProperty =
+        public static readonly AvaloniaProperty<double> SelectionCornerRadiusProperty =
             AvaloniaProperty.Register<TextArea, double>("SelectionCornerRadius", 3.0);
 
         /// <summary>
@@ -668,7 +666,7 @@ namespace AvaloniaEdit.Editing
 
             Dispatcher.UIThread.InvokeAsync(() =>
             {
-                (this as ILogicalScrollable).RaiseScrollInvalidated(EventArgs.Empty);
+                (this as ILogicalScrollable).InvalidateScroll?.Invoke();
             });
         }
 
@@ -898,7 +896,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// IndentationStrategy property.
         /// </summary>
-        public static readonly StyledProperty<IIndentationStrategy> IndentationStrategyProperty =
+        public static readonly AvaloniaProperty<IIndentationStrategy> IndentationStrategyProperty =
             AvaloniaProperty.Register<TextArea, IIndentationStrategy>("IndentationStrategy", new DefaultIndentationStrategy());
 
         /// <summary>
@@ -986,7 +984,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// The <see cref="OverstrikeMode"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> OverstrikeModeProperty =
+        public static readonly AvaloniaProperty<bool> OverstrikeModeProperty =
             AvaloniaProperty.Register<TextArea, bool>("OverstrikeMode");
 
         /// <summary>
@@ -1001,18 +999,17 @@ namespace AvaloniaEdit.Editing
         #endregion
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
         {
-            base.OnPropertyChanged(property, oldValue, newValue, priority);        
-            
-            if (property == SelectionBrushProperty
-                || property == SelectionBorderProperty
-                || property == SelectionForegroundProperty
-                || property == SelectionCornerRadiusProperty)
+            base.OnPropertyChanged(e);
+            if (e.Property == SelectionBrushProperty
+                || e.Property == SelectionBorderProperty
+                || e.Property == SelectionForegroundProperty
+                || e.Property == SelectionCornerRadiusProperty)
             {
                 TextView.Redraw();
             }
-            else if (property == OverstrikeModeProperty)
+            else if (e.Property == OverstrikeModeProperty)
             {
                 Caret.UpdateIfVisible();
             }
@@ -1032,13 +1029,6 @@ namespace AvaloniaEdit.Editing
         /// </summary>
         public event EventHandler<TextEventArgs> TextCopied;
 
-
-        event EventHandler ILogicalScrollable.ScrollInvalidated
-        {
-            add => _scrollInvalidated += value;
-            remove => _scrollInvalidated -= value;
-        }
-
         internal void OnTextCopied(TextEventArgs e)
         {
             TextCopied?.Invoke(this, e);
@@ -1047,6 +1037,18 @@ namespace AvaloniaEdit.Editing
         public IList<RoutedCommandBinding> CommandBindings { get; } = new List<RoutedCommandBinding>();
 
         bool ILogicalScrollable.IsLogicalScrollEnabled => _logicalScrollable?.IsLogicalScrollEnabled ?? default(bool);
+
+        Action ILogicalScrollable.InvalidateScroll
+        {
+            get => _logicalScrollable?.InvalidateScroll;
+            set
+            {
+                if (_logicalScrollable != null)
+                {
+                    _logicalScrollable.InvalidateScroll = value;
+                }
+            }
+        }
 
         Size ILogicalScrollable.ScrollSize => _logicalScrollable?.ScrollSize ?? default(Size);
 
@@ -1097,11 +1099,6 @@ namespace AvaloniaEdit.Editing
 
         IControl ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl from)
             => _logicalScrollable?.GetControlInDirection(direction, from);
-
-        public void RaiseScrollInvalidated(EventArgs e)
-        {
-            _scrollInvalidated?.Invoke(this, e);
-        }
     }
 
     /// <summary>

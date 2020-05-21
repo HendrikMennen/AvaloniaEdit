@@ -49,7 +49,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Dependency property for <see cref="UseRegex"/>.
         /// </summary>
-        public static readonly StyledProperty<bool> UseRegexProperty =
+        public static readonly AvaloniaProperty<bool> UseRegexProperty =
             AvaloniaProperty.Register<SearchPanel, bool>(nameof(UseRegex));
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Dependency property for <see cref="MatchCase"/>.
         /// </summary>
-        public static readonly StyledProperty<bool> MatchCaseProperty =
+        public static readonly AvaloniaProperty<bool> MatchCaseProperty =
             AvaloniaProperty.Register<SearchPanel, bool>(nameof(MatchCase));
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Dependency property for <see cref="WholeWords"/>.
         /// </summary>
-        public static readonly StyledProperty<bool> WholeWordsProperty =
+        public static readonly AvaloniaProperty<bool> WholeWordsProperty =
             AvaloniaProperty.Register<SearchPanel, bool>(nameof(WholeWords));
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Dependency property for <see cref="SearchPattern"/>.
         /// </summary>
-        public static readonly StyledProperty<string> SearchPatternProperty =
+        public static readonly AvaloniaProperty<string> SearchPatternProperty =
             AvaloniaProperty.Register<SearchPanel, string>(nameof(SearchPattern), "");
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace AvaloniaEdit.Search
             set => SetValue(SearchPatternProperty, value);
         }
 
-        public static readonly StyledProperty<bool> IsReplaceModeProperty =
-            AvaloniaProperty.Register<SearchPanel, bool>(nameof(IsReplaceMode));
+        public static readonly AvaloniaProperty<bool> IsReplaceModeProperty =
+            AvaloniaProperty.Register<SearchPanel, bool>(nameof(IsReplaceMode), validate: ValidateReplaceMode);
 
         /// <summary>
         /// Checks if replacemode is allowed
@@ -125,7 +125,7 @@ namespace AvaloniaEdit.Search
             set => SetValue(IsReplaceModeProperty, _textEditor?.IsReadOnly ?? false ? false : value);
         }
 
-        public static readonly StyledProperty<string> ReplacePatternProperty =
+        public static readonly AvaloniaProperty<string> ReplacePatternProperty =
             AvaloniaProperty.Register<SearchPanel, string>(nameof(ReplacePattern));
 
         public string ReplacePattern
@@ -357,13 +357,14 @@ namespace AvaloniaEdit.Search
         {
             if (!IsReplaceMode) return;
 
-
+            
             if (!_textArea.Selection.IsEmpty)
             {
                 _textArea.Selection.ReplaceSelectionWithText(ReplacePattern ?? string.Empty);
             }
 
             //FindNext();
+
             UpdateSearch();
         }
 
@@ -408,7 +409,6 @@ namespace AvaloniaEdit.Search
                     if (changeSelection && result.StartOffset >= offset)
                     {
                         SelectResult(result);
-                        Console.WriteLine("TEST");
                         changeSelection = false;
                     }
                     _renderer.CurrentResults.Add(result);
@@ -428,8 +428,6 @@ namespace AvaloniaEdit.Search
             }
 
             _textArea.TextView.InvalidateLayer(KnownLayer.Selection);
-            
-            if(changeSelection) FindNext();
         }
 
         private void SelectResult(TextSegment result)
@@ -468,10 +466,6 @@ namespace AvaloniaEdit.Search
                 case Key.Escape:
                     e.Handled = true;
                     Close();
-                    break;
-
-                case Key.Tab:
-                    e.Handled = true;
                     break;
             }
         }
@@ -541,12 +535,6 @@ namespace AvaloniaEdit.Search
             e.Handled = true;
 
             base.OnGotFocus(e);
-        }
-
-        protected override void OnLostFocus(RoutedEventArgs e)
-        {
-            base.OnLostFocus(e);
-            if (_messageView != null) _messageView.IsOpen = false;
         }
 
         /// <summary>

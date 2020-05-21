@@ -1,6 +1,5 @@
 using System;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Media;
 
 namespace AvaloniaEdit.Text
@@ -167,8 +166,7 @@ namespace AvaloniaEdit.Text
             var formattedText = new FormattedText
             {
                 Text = stringRange.ToString(),
-                Typeface = new Typeface(tf.FontFamily, tf.Weight, tf.Style),
-                FontSize = run.FontSize
+                Typeface = new Typeface(tf.FontFamily, run.FontSize, tf.Style, tf.Weight),
             };
        
 
@@ -201,9 +199,7 @@ namespace AvaloniaEdit.Text
                 var size = new FormattedText
                 {
                     Text = StringRange[i].ToString(),
-                    Typeface = new Typeface(tf.FontFamily, tf.Weight, tf.Style),
-                    FontSize = FontSize
-                    
+                    Typeface = new Typeface(tf.FontFamily, FontSize, tf.Style, tf.Weight)
                 }.Bounds.Size;
                 
                 result[i] = size.Width;

@@ -21,7 +21,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.Styling;
 
 namespace AvaloniaEdit.Search
 {
@@ -33,7 +32,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Identifies the <see cref="DropDownContentProperty" /> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Popup> DropDownContentProperty
+        public static readonly AvaloniaProperty<Popup> DropDownContentProperty
             = AvaloniaProperty.Register<DropDownButton, Popup>(nameof(DropDownContent));
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Identifies the <see cref="IsDropDownContentOpenProperty" /> dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> IsDropDownContentOpenProperty
+        public static readonly AvaloniaProperty<bool> IsDropDownContentOpenProperty
             = AvaloniaProperty.Register<DropDownButton, bool>(nameof(IsDropDownContentOpen));
         
         /// <summary>

@@ -28,7 +28,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -52,8 +51,6 @@ namespace AvaloniaEdit.Rendering
                                                      Justification = "The user usually doesn't work with TextView but with TextEditor; and nulling the Document property is sufficient to dispose everything.")]
     public class TextView : Control, ITextEditorComponent, ILogicalScrollable
     {
-        private EventHandler _scrollInvalidated;
-
         #region Constructor
         static TextView()
         {
@@ -542,7 +539,7 @@ namespace AvaloniaEdit.Rendering
         /// <summary>
         /// NonPrintableCharacterBrush dependency property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> NonPrintableCharacterBrushProperty =
+        public static readonly AvaloniaProperty<IBrush> NonPrintableCharacterBrushProperty =
             AvaloniaProperty.Register<TextView, IBrush>("NonPrintableCharacterBrush", Brushes.LightGray);
 
         /// <summary>
@@ -557,7 +554,7 @@ namespace AvaloniaEdit.Rendering
         /// <summary>
         /// LinkTextForegroundBrush dependency property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> LinkTextForegroundBrushProperty =
+        public static readonly AvaloniaProperty<IBrush> LinkTextForegroundBrushProperty =
             AvaloniaProperty.Register<TextView, IBrush>("LinkTextForegroundBrush", Brushes.Blue);
 
         /// <summary>
@@ -572,7 +569,7 @@ namespace AvaloniaEdit.Rendering
         /// <summary>
         /// LinkTextBackgroundBrush dependency property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> LinkTextBackgroundBrushProperty =
+        public static readonly AvaloniaProperty<IBrush> LinkTextBackgroundBrushProperty =
             AvaloniaProperty.Register<TextView, IBrush>("LinkTextBackgroundBrush", Brushes.Transparent);
 
         /// <summary>
@@ -588,7 +585,7 @@ namespace AvaloniaEdit.Rendering
         /// <summary>
         /// LinkTextUnderlinedBrush dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> LinkTextUnderlineProperty =
+        public static readonly AvaloniaProperty<bool> LinkTextUnderlineProperty =
             AvaloniaProperty.Register<TextView, bool>(nameof(LinkTextUnderline), true);
 
         /// <summary>
@@ -1059,9 +1056,9 @@ namespace AvaloniaEdit.Rendering
             var properties = new TextRunProperties
             {
                 FontSize = FontSize,
-                Typeface = new Typeface(TextBlock.GetFontFamily(this), TextBlock.GetFontWeight(this), TextBlock.GetFontStyle(this)),
+                Typeface = new Typeface(TextBlock.GetFontFamily(this), FontSize, TextBlock.GetFontStyle(this), TextBlock.GetFontWeight(this)),
                 ForegroundBrush = TextBlock.GetForeground(this),
-                CultureInfo = CultureInfo.CurrentCulture,               
+                CultureInfo = CultureInfo.CurrentCulture
             };
             return properties;
         }
@@ -1397,7 +1394,7 @@ namespace AvaloniaEdit.Rendering
 
         private void OnScrollChange()
         {
-            ((ILogicalScrollable)this).RaiseScrollInvalidated(EventArgs.Empty);
+            ((ILogicalScrollable)this).InvalidateScroll?.Invoke();
         }
 
         private bool _canVerticallyScroll = true;
@@ -1637,8 +1634,7 @@ namespace AvaloniaEdit.Rendering
                 Cursor = new Cursor(StandardCursorType.Ibeam); //ISSUE : Cursor gets set to Default but not back to IBeam
                 _currentHoveredElement = element;
             }
-
-            Cursor = element?.OnQueryCursor(e) ?? new Cursor(StandardCursorType.Ibeam);
+            element?.OnQueryCursor(e);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -1871,7 +1867,6 @@ namespace AvaloniaEdit.Rendering
             add => AddHandler(PointerHoverStoppedEvent, value);
             remove => RemoveHandler(PointerHoverStoppedEvent, value);
         }
-        
 
         private readonly PointerHoverLogic _hoverLogic;
 
@@ -1925,24 +1920,24 @@ namespace AvaloniaEdit.Rendering
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
         {
-            base.OnPropertyChanged(property, oldValue, newValue, priority);
+            base.OnPropertyChanged(e);
 
-            if (property == TemplatedControl.ForegroundProperty
-                     || property == NonPrintableCharacterBrushProperty
-                     || property == LinkTextBackgroundBrushProperty
-                     || property == LinkTextForegroundBrushProperty
-                     || property == LinkTextUnderlineProperty)
+            if (e.Property == TemplatedControl.ForegroundProperty
+                     || e.Property == NonPrintableCharacterBrushProperty
+                     || e.Property == LinkTextBackgroundBrushProperty
+                     || e.Property == LinkTextForegroundBrushProperty
+                     || e.Property == LinkTextUnderlineProperty)
             {
                 // changing brushes requires recreating the cached elements
                 RecreateCachedElements();
                 Redraw();
             }
-            if (property == TemplatedControl.FontFamilyProperty
-                || property == TemplatedControl.FontSizeProperty
-                || property == TemplatedControl.FontStyleProperty
-                || property == TemplatedControl.FontWeightProperty)
+            if (e.Property == TemplatedControl.FontFamilyProperty
+                || e.Property == TemplatedControl.FontSizeProperty
+                || e.Property == TemplatedControl.FontStyleProperty
+                || e.Property == TemplatedControl.FontWeightProperty)
             {
                 // changing font properties requires recreating cached elements
                 RecreateCachedElements();
@@ -1950,15 +1945,15 @@ namespace AvaloniaEdit.Rendering
                 InvalidateDefaultTextMetrics();
                 Redraw();
             }
-            if (property == ColumnRulerPenProperty)
+            if (e.Property == ColumnRulerPenProperty)
             {
                 _columnRulerRenderer.SetRuler(Options.ColumnRulerPosition, ColumnRulerPen);
             }
-            if (property == CurrentLineBorderProperty)
+            if (e.Property == CurrentLineBorderProperty)
             {
                 _currentLineHighlighRenderer.BorderPen = CurrentLineBorder;
             }
-            if (property == CurrentLineBackgroundProperty)
+            if (e.Property == CurrentLineBackgroundProperty)
             {
                 _currentLineHighlighRenderer.BackgroundBrush = CurrentLineBackground;
             }
@@ -1968,7 +1963,7 @@ namespace AvaloniaEdit.Rendering
         /// The pen used to draw the column ruler.
         /// <seealso cref="TextEditorOptions.ShowColumnRuler"/>
         /// </summary>
-        public static readonly StyledProperty<Pen> ColumnRulerPenProperty =
+        public static readonly AvaloniaProperty<Pen> ColumnRulerPenProperty =
             AvaloniaProperty.Register<TextView, Pen>("ColumnRulerBrush", CreateFrozenPen(Brushes.LightGray));
 
         private static Pen CreateFrozenPen(IBrush brush)
@@ -1999,17 +1994,6 @@ namespace AvaloniaEdit.Rendering
             return null;
         }
 
-        event EventHandler ILogicalScrollable.ScrollInvalidated
-        {
-            add => _scrollInvalidated += value;
-            remove => _scrollInvalidated -= value;
-        }
-
-        void ILogicalScrollable.RaiseScrollInvalidated(EventArgs e)
-        {
-            _scrollInvalidated?.Invoke(this, e);
-        }
-
         /// <summary>
         /// Gets/Sets the pen used to draw the column ruler.
         /// <seealso cref="TextEditorOptions.ShowColumnRuler"/>
@@ -2023,7 +2007,7 @@ namespace AvaloniaEdit.Rendering
         /// <summary>
         /// The <see cref="CurrentLineBackground"/> property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> CurrentLineBackgroundProperty =
+        public static readonly AvaloniaProperty<IBrush> CurrentLineBackgroundProperty =
             AvaloniaProperty.Register<TextView, IBrush>("CurrentLineBackground");
 
         /// <summary>
@@ -2038,7 +2022,7 @@ namespace AvaloniaEdit.Rendering
         /// <summary>
         /// The <see cref="CurrentLineBorder"/> property.
         /// </summary>
-        public static readonly StyledProperty<Pen> CurrentLineBorderProperty =
+        public static readonly AvaloniaProperty<Pen> CurrentLineBorderProperty =
             AvaloniaProperty.Register<TextView, Pen>("CurrentLineBorder");
 
         /// <summary>
@@ -2092,7 +2076,9 @@ namespace AvaloniaEdit.Rendering
             }
         }
 
-        bool ILogicalScrollable.IsLogicalScrollEnabled => true;        
+        bool ILogicalScrollable.IsLogicalScrollEnabled => true;
+
+        Action ILogicalScrollable.InvalidateScroll { get; set; }
 
         Size ILogicalScrollable.ScrollSize => new Size(10, 50);
 

@@ -22,7 +22,6 @@ using AvaloniaEdit.Utils;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Data;
 
 namespace AvaloniaEdit.Folding
 {
@@ -108,11 +107,10 @@ namespace AvaloniaEdit.Folding
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
         {
-            base.OnPropertyChanged(property, oldValue, newValue, priority);
-
-            if (property == IsPointerOverProperty)
+            base.OnPropertyChanged(e);
+            if (e.Property == IsPointerOverProperty)
             {
                 InvalidateVisual();
             }

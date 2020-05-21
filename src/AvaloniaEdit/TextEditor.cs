@@ -100,7 +100,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// Document property.
         /// </summary>
-        public static readonly StyledProperty<TextDocument> DocumentProperty
+        public static readonly AvaloniaProperty<TextDocument> DocumentProperty
             = TextView.DocumentProperty.AddOwner<TextEditor>();
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// Options property.
         /// </summary>
-        public static readonly StyledProperty<TextEditorOptions> OptionsProperty
+        public static readonly AvaloniaProperty<TextEditorOptions> OptionsProperty
             = TextView.OptionsProperty.AddOwner<TextEditor>();
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// The <see cref="SyntaxHighlighting"/> property.
         /// </summary>
-        public static readonly StyledProperty<IHighlightingDefinition> SyntaxHighlightingProperty =
+        public static readonly AvaloniaProperty<IHighlightingDefinition> SyntaxHighlightingProperty =
             AvaloniaProperty.Register<TextEditor, IHighlightingDefinition>("SyntaxHighlighting");
 
 
@@ -345,7 +345,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// Word wrap dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> WordWrapProperty =
+        public static readonly AvaloniaProperty<bool> WordWrapProperty =
             AvaloniaProperty.Register<TextEditor, bool>("WordWrap");
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// IsReadOnly dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> IsReadOnlyProperty =
+        public static readonly AvaloniaProperty<bool> IsReadOnlyProperty =
             AvaloniaProperty.Register<TextEditor, bool>("IsReadOnly");
 
         /// <summary>
@@ -396,7 +396,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// Dependency property for <see cref="IsModified"/>
         /// </summary>
-        public static readonly StyledProperty<bool> IsModifiedProperty =
+        public static readonly AvaloniaProperty<bool> IsModifiedProperty =
             AvaloniaProperty.Register<TextEditor, bool>("IsModified");
 
         /// <summary>
@@ -444,7 +444,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// ShowLineNumbers dependency property.
         /// </summary>
-        public static readonly StyledProperty<bool> ShowLineNumbersProperty =
+        public static readonly AvaloniaProperty<bool> ShowLineNumbersProperty =
             AvaloniaProperty.Register<TextEditor, bool>("ShowLineNumbers");
 
         /// <summary>
@@ -494,7 +494,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// LineNumbersForeground dependency property.
         /// </summary>
-        public static readonly StyledProperty<IBrush> LineNumbersForegroundProperty =
+        public static readonly AvaloniaProperty<IBrush> LineNumbersForegroundProperty =
             AvaloniaProperty.Register<TextEditor, IBrush>("LineNumbersForeground", Brushes.Gray);
 
         /// <summary>
@@ -950,7 +950,7 @@ namespace AvaloniaEdit
         /// <summary>
         /// Encoding dependency property.
         /// </summary>
-        public static readonly StyledProperty<Encoding> EncodingProperty =
+        public static readonly AvaloniaProperty<Encoding> EncodingProperty =
             AvaloniaProperty.Register<TextEditor, Encoding>("Encoding");
 
         /// <summary>

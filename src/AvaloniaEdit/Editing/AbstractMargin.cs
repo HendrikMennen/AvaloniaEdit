@@ -46,7 +46,7 @@ namespace AvaloniaEdit.Editing
         /// <summary>
         /// TextView property.
         /// </summary>
-        public static readonly StyledProperty<TextView> TextViewProperty =
+        public static readonly AvaloniaProperty<TextView> TextViewProperty =
             AvaloniaProperty.Register<AbstractMargin, TextView>(nameof(TextView));
 
         /// <summary>
