@@ -2014,7 +2014,7 @@ namespace AvaloniaEdit.Rendering
         /// </summary>
         public Pen ColumnRulerPen
         {
-            get => GetValue(ColumnRulerPenProperty);
+            get => (Pen)GetValue(ColumnRulerPenProperty);
             set => SetValue(ColumnRulerPenProperty, value);
         }
 
@@ -2029,7 +2029,7 @@ namespace AvaloniaEdit.Rendering
         /// </summary>
         public IBrush CurrentLineBackground
         {
-            get => GetValue(CurrentLineBackgroundProperty);
+            get => (IBrush)GetValue(CurrentLineBackgroundProperty);
             set => SetValue(CurrentLineBackgroundProperty, value);
         }
 
@@ -2044,7 +2044,7 @@ namespace AvaloniaEdit.Rendering
         /// </summary>
         public Pen CurrentLineBorder
         {
-            get => GetValue(CurrentLineBorderProperty);
+            get => (Pen)GetValue(CurrentLineBorderProperty);
             set => SetValue(CurrentLineBorderProperty, value);
         }
 
@@ -2091,8 +2091,6 @@ namespace AvaloniaEdit.Rendering
         }
 
         bool ILogicalScrollable.IsLogicalScrollEnabled => true;
-
-        Action ILogicalScrollable.InvalidateScroll { get; set; }
 
         Size ILogicalScrollable.ScrollSize => new Size(10, 50);
 

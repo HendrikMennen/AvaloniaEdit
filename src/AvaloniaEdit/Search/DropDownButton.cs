@@ -32,7 +32,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Identifies the <see cref="DropDownContentProperty" /> dependency property.
         /// </summary>
-        public static readonly AvaloniaProperty<Popup> DropDownContentProperty
+        public static readonly StyledProperty<Popup> DropDownContentProperty
             = AvaloniaProperty.Register<DropDownButton, Popup>(nameof(DropDownContent));
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace AvaloniaEdit.Search
         /// <summary>
         /// Identifies the <see cref="IsDropDownContentOpenProperty" /> dependency property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsDropDownContentOpenProperty
+        public static readonly StyledProperty<bool> IsDropDownContentOpenProperty
             = AvaloniaProperty.Register<DropDownButton, bool>(nameof(IsDropDownContentOpen));
         
         /// <summary>

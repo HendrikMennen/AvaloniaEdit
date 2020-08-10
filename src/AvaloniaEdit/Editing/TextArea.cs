@@ -611,7 +611,7 @@ namespace AvaloniaEdit.Editing
         /// If the textview can be scrolled.
         /// </summary>
         /// <param name="line">The line to scroll to.</param>
-        public void ScrollToLine (int line)
+        public void ScrollToLine(int line)
         {
             var viewPortLines = (int)(this as IScrollable).Viewport.Height;
 

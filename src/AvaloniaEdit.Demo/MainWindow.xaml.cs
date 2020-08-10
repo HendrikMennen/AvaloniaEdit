@@ -35,7 +35,6 @@ namespace AvaloniaEdit.Demo
         public MainWindow()
         {
             InitializeComponent();
-            this.AttachDevTools();
 
             _textEditor = this.FindControl<TextEditor>("Editor");
             _textEditor.Background = Brushes.Transparent;
