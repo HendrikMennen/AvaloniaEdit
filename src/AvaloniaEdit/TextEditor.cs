@@ -264,9 +264,9 @@ namespace AvaloniaEdit
 
         #region TextArea / ScrollViewer properties
 
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
             ScrollViewer = (ScrollViewer)e.NameScope.Find("PART_ScrollViewer");
             ScrollViewer.Content = TextArea;
 
@@ -686,8 +686,7 @@ namespace AvaloniaEdit
         public void ScrollToEnd()
         {
             ApplyTemplate(); // ensure scrollViewer is created
-            //if (scrollViewer != null)
-            //    scrollViewer.ScrollToEnd();
+            ScrollViewer?.ScrollToEnd();
         }
 
         /// <summary>
@@ -696,8 +695,7 @@ namespace AvaloniaEdit
         public void ScrollToHome()
         {
             ApplyTemplate(); // ensure scrollViewer is created
-            //if (scrollViewer != null)
-            //    scrollViewer.ScrollToHome();
+            ScrollViewer?.ScrollToHome();
         }
 
         /// <summary>

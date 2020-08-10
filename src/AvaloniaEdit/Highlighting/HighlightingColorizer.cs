@@ -272,8 +272,7 @@ namespace AvaloniaEdit.Highlighting
             {
                 var tf = element.TextRunProperties.Typeface;
                 element.TextRunProperties.Typeface = new Avalonia.Media.Typeface(
-                    tf.FontFamily,
-                    tf.FontSize,
+                    tf.FontFamily,                    
                     color.FontStyle ?? tf.Style,
                     color.FontWeight ?? tf.Weight
                 );
