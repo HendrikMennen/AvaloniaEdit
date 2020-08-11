@@ -358,15 +358,12 @@ namespace AvaloniaEdit.Search
         {
             if (!IsReplaceMode) return;
 
-            
+            if(_textArea.Selection.IsEmpty) FindNext();
+
             if (!_textArea.Selection.IsEmpty)
             {
                 _textArea.Selection.ReplaceSelectionWithText(ReplacePattern ?? string.Empty);
             }
-
-            //FindNext();
-
-            UpdateSearch();
         }
 
         public void ReplaceAll()
