@@ -17,7 +17,9 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using Avalonia;
 using Avalonia.Controls.Platform;
+using Avalonia.Controls.Primitives;
 using AvaloniaEdit.Editing;
 
 namespace AvaloniaEdit.CodeCompletion
@@ -66,6 +68,11 @@ namespace AvaloniaEdit.CodeCompletion
         {
             TextArea.Caret.PositionChanged -= CaretPositionChanged;
             base.DetachEvents();
+        }
+
+        private void CompletionList_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == TemplatedControl.FontSizeProperty) SetPosition();
         }
 
         private void CaretPositionChanged(object sender, EventArgs e)

@@ -19,6 +19,7 @@
 using Avalonia;
 using AvaloniaEdit.Editing;
 using Avalonia.Input;
+using Avalonia.Controls.Primitives;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -36,6 +37,10 @@ namespace AvaloniaEdit.CodeCompletion
         {
             //_overloadViewer.Margin = new Thickness(2, 0, 0, 0);
             Child = _overloadViewer;
+            _overloadViewer.PropertyChanged += (o, e) =>
+            {
+                if (e.Property == TemplatedControl.FontSizeProperty) SetPosition();
+            };
         }
 
         /// <summary>

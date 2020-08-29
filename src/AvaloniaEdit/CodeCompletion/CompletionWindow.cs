@@ -139,7 +139,13 @@ namespace AvaloniaEdit.CodeCompletion
             }
         }
 
+
         #endregion
+
+        private void CompletionList_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == TemplatedControl.FontSizeProperty) SetPosition();
+        }
 
         private void CompletionList_InsertionRequested(object sender, EventArgs e)
         {
@@ -154,6 +160,7 @@ namespace AvaloniaEdit.CodeCompletion
         {
             CompletionList.InsertionRequested += CompletionList_InsertionRequested;
             CompletionList.SelectionChanged += CompletionList_SelectionChanged;
+            CompletionList.ListBox.PropertyChanged += CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged += CaretPositionChanged;
             TextArea.PointerWheelChanged += TextArea_MouseWheel;
             TextArea.TextInput += TextArea_PreviewTextInput;
@@ -164,6 +171,7 @@ namespace AvaloniaEdit.CodeCompletion
         {
             CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
             CompletionList.SelectionChanged -= CompletionList_SelectionChanged;
+            CompletionList.ListBox.PropertyChanged -= CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged -= CaretPositionChanged;
             TextArea.PointerWheelChanged -= TextArea_MouseWheel;
             TextArea.TextInput -= TextArea_PreviewTextInput;

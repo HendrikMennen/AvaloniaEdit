@@ -104,6 +104,11 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void Initailize()
         {
+            SetPosition();
+        }
+
+        protected void SetPosition()
+        {
             if (_document != null && StartOffset != TextArea.Caret.Offset)
             {
                 SetPosition(new TextViewPosition(_document.GetLocation(StartOffset)));
@@ -143,7 +148,7 @@ namespace AvaloniaEdit.CodeCompletion
 
             // LostKeyboardFocus seems to be more reliable than PreviewLostKeyboardFocus - see SD-1729
             TextArea.LostFocus += TextAreaLostFocus;
-            TextArea.TextView.ScrollOffsetChanged += TextViewScrollOffsetChanged;
+            TextArea.TextView.ScrollOffsetChanged += TextViewScrollOffsetChanged;          
             TextArea.DocumentChanged += TextAreaDocumentChanged;
             if (_parentWindow != null)
             {
