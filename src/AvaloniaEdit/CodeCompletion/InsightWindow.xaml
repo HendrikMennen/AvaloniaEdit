@@ -9,6 +9,8 @@
                 Value="Black" />
         <Setter Property="Background"
                 Value="#eeeeee" />
+        <Setter Property="Foreground"
+                Value="#eeeeee" />
         <Setter Property="Padding"
                 Value="2" />
         <Setter Property="Template">
@@ -26,16 +28,16 @@
                                     Orientation="Horizontal"
                                     IsVisible="{Binding Provider.Count, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static cc:CollapseIfSingleOverloadConverter.Instance}}">
                             <Button Name="PART_UP">
-                                <Path Stroke="Black"
-                                      Fill="Black"
+                                <Path Stroke="{TemplateBinding Foreground}"
+                                      Fill="{TemplateBinding Foreground}"
                                       Data="M 0,0.866 L 1,0.866 L 0.5,0 Z"
                                       Stretch="UniformToFill" />
                             </Button>
                             <TextBlock Margin="2,0,2,0"
                                        Text="{Binding Provider.CurrentIndexText, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Button Name="PART_DOWN">
-                                <Path Stroke="Black"
-                                      Fill="Black"
+                                <Path Stroke="{TemplateBinding Foreground}"
+                                      Fill="{TemplateBinding Foreground}"
                                       Data="M 0,0 L 1,0 L 0.5,0.866 Z"
                                       Stretch="UniformToFill" />
                             </Button>

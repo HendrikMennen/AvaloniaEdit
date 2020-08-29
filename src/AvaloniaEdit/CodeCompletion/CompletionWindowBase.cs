@@ -32,6 +32,7 @@ using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Avalonia.Controls.Primitives.PopupPositioning;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -80,7 +81,9 @@ namespace AvaloniaEdit.CodeCompletion
             TextArea = textArea ?? throw new ArgumentNullException(nameof(textArea));
             _parentWindow = textArea.GetVisualRoot() as Window;
 
-           
+            PlacementGravity = PopupGravity.BottomRight;
+            PlacementAnchor = PopupAnchor.TopLeft;
+
             AddHandler(PointerReleasedEvent, OnMouseUp, handledEventsToo: true);
 
             StartOffset = EndOffset = TextArea.Caret.Offset;
@@ -349,6 +352,10 @@ namespace AvaloniaEdit.CodeCompletion
         private Point _visualLocation;
         private Point _visualLocationTop;
 
+        public Vector AdditionalOffset { get; set; } = Vector.Zero;
+        public VisualYPosition VisualPosition { get; set; } = VisualYPosition.LineBottom;
+
+
         /// <summary>
         /// Positions the completion window at the specified position.
         /// </summary>
@@ -356,7 +363,7 @@ namespace AvaloniaEdit.CodeCompletion
         {
             var textView = TextArea.TextView;
 
-            _visualLocation = textView.GetVisualPosition(position, VisualYPosition.LineBottom);
+            _visualLocation = textView.GetVisualPosition(position, VisualPosition);
             _visualLocationTop = textView.GetVisualPosition(position, VisualYPosition.LineTop);
 
             UpdatePosition();
@@ -370,9 +377,9 @@ namespace AvaloniaEdit.CodeCompletion
         {
             var textView = TextArea.TextView;
 
-            var position = _visualLocation - textView.ScrollOffset;
+            var position = _visualLocation - textView.ScrollOffset + AdditionalOffset;
 
-            Host?.ConfigurePosition(textView, PlacementMode.AnchorAndGravity, position, Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.TopLeft, Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.BottomRight);
+            Host?.ConfigurePosition(textView, PlacementMode.AnchorAndGravity, position, PlacementAnchor, PlacementGravity);
         }
 
         // TODO: check if needed
