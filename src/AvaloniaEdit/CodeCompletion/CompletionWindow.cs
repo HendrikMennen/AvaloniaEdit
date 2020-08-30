@@ -121,13 +121,15 @@ namespace AvaloniaEdit.CodeCompletion
                         if(container.Item == item)
                         {
                             itemHeight = container.ContainerControl.Bounds.Height;
+                            break;
                         }                    
                     }
                     int index = CompletionList.CurrentList.IndexOf(item);
                     int scrollIndex = (int)CompletionList.ListBox.Scroll.Offset.Y;
-                    if ((index * itemHeight) - scrollIndex < 0) index++;
-                    if (((index+1) * itemHeight) - scrollIndex > MaxHeight) index--;
-                    _toolTip.Offset = new PixelPoint(2, (int)(index * itemHeight) - scrollIndex);
+                    int yoffset = index - scrollIndex;
+                    if (yoffset < 0) yoffset = 0;
+                    if ((yoffset + 1) * itemHeight > MaxHeight) yoffset--;
+                    _toolTip.Offset = new PixelPoint(2, (int)(yoffset * itemHeight)); //Todo find way to measure item height
                 }
 
                 _toolTip.PlacementTarget = this.Host as PopupRoot;
