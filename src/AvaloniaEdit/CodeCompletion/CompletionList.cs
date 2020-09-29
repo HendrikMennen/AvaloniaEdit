@@ -270,6 +270,8 @@ namespace AvaloniaEdit.CodeCompletion
                 where quality > 0
                 select new { Item = item, Quality = quality };
 
+            matchingItems = matchingItems.OrderByDescending(x => x.Quality).ThenBy(x => x.Item.Text);
+
             // e.g. "DateTimeKind k = (*cc here suggests DateTimeKind*)"
             var suggestedItem = _listBox.SelectedIndex != -1 ? (ICompletionData)_listBox.SelectedItem : null;
 
