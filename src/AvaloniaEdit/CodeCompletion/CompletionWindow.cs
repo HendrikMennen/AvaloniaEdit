@@ -24,6 +24,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using System.ComponentModel;
+using System.Linq;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -115,15 +117,7 @@ namespace AvaloniaEdit.CodeCompletion
                 if (CompletionList.CurrentList != null)
                 {
                     var containers = CompletionList.ListBox.ItemContainerGenerator.Containers;
-                    double itemHeight = 20;
-                    foreach(var container in containers)
-                    {
-                        if(container.Item == item)
-                        {
-                            itemHeight = container.ContainerControl.Bounds.Height;
-                            break;
-                        }                    
-                    }
+                    double itemHeight = containers.First()?.ContainerControl.Bounds.Height ?? 20;
                     int index = CompletionList.CurrentList.IndexOf(item);
                     int scrollIndex = (int)CompletionList.ListBox.Scroll.Offset.Y;
                     int yoffset = index - scrollIndex;
