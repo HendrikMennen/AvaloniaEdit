@@ -182,7 +182,7 @@ namespace AvaloniaEdit.Demo
                 Text = text;
             }
 
-            public IBitmap Image => null;
+            public IImage Image => null;
 
             public string Text { get; }
 
