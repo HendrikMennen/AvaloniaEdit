@@ -153,6 +153,12 @@ namespace AvaloniaEdit.Search
 
         #endregion
 
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            _messageView?.Close();
+            base.OnDetachedFromVisualTree(e);
+        }
+
         private static void MarkerBrushChangedCallback(AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Sender is SearchPanel panel)
