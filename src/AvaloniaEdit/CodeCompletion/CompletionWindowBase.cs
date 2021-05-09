@@ -172,7 +172,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// </summary>
         protected virtual void DetachEvents()
         {
-            ((ISetLogicalParent)this).SetParent(null);
+            //((ISetLogicalParent)this).SetParent(null);
 
             if (_document != null)
             {
