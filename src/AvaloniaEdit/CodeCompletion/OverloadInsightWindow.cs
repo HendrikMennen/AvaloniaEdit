@@ -20,6 +20,7 @@ using Avalonia;
 using AvaloniaEdit.Editing;
 using Avalonia.Input;
 using Avalonia.Controls.Primitives;
+using Avalonia.Threading;
 
 namespace AvaloniaEdit.CodeCompletion
 {
