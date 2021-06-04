@@ -174,7 +174,7 @@ namespace AvaloniaEdit.CodeCompletion
             }
         }
 
-        protected void OnDoubleTapped(object sender, TappedEventArgs e)
+        protected void OnDoubleTapped(object sender, RoutedEventArgs e)
         {
             //TODO TEST
             if (((AvaloniaObject)e.Source).VisualAncestorsAndSelf()
