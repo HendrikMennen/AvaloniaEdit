@@ -257,5 +257,11 @@ namespace AvaloniaEdit.CodeCompletion
                 }
             }
         }
+
+        public void Show(string e)
+        {
+            base.Show();
+            if(!string.IsNullOrEmpty(e)) CompletionList.SelectItem(e);
+        }
     }
 }
