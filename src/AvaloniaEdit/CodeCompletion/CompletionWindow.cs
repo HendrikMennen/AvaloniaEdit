@@ -97,18 +97,7 @@ namespace AvaloniaEdit.CodeCompletion
             var description = item?.Description;
             if (description != null)
             {
-                if (description is string descriptionText)
-                {
-                    _toolTipContent.Content = new TextBlock
-                    {
-                        Text = descriptionText,
-                        TextWrapping = TextWrapping.Wrap
-                    };
-                }
-                else
-                {                   
-                    _toolTipContent.Content = description;
-                }
+                _toolTipContent.Content = description;
 
                 _toolTip.IsOpen = false; //Popup needs to be closed to change position
 
