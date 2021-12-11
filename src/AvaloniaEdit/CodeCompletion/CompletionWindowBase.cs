@@ -384,7 +384,10 @@ namespace AvaloniaEdit.CodeCompletion
 
             var position = _visualLocation - textView.ScrollOffset + AdditionalOffset;
 
-            Host?.ConfigurePosition(textView, PlacementMode.AnchorAndGravity, position, PlacementAnchor, PlacementGravity);
+            PlacementTarget = textView;
+            PlacementMode = PlacementMode.AnchorAndGravity;
+            HorizontalOffset = position.X;
+            VerticalOffset = position.Y;
         }
 
         // TODO: check if needed
