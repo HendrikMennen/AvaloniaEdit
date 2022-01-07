@@ -56,6 +56,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (!IsOpen) return;
             base.OnKeyDown(e);
             if (!e.Handled && Provider != null && Provider.Count > 1)
             {
