@@ -75,18 +75,6 @@ namespace AvaloniaEdit.CodeCompletion
             AttachEvents();
         }
 
-        protected override void OnClosed()
-        {
-            base.OnClosed();
-
-            if (_toolTip != null)
-            {
-                _toolTip.IsOpen = false;
-                _toolTip = null;
-                _toolTipContent = null;
-            }
-        }
-
         #region ToolTip handling
 
         private void CompletionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -103,7 +91,7 @@ namespace AvaloniaEdit.CodeCompletion
 
                 
                 //Calculate offset for tooltip
-                if (CompletionList.CurrentList != null)
+                if (CompletionList.CurrentList != null && CompletionList.ListBox.ItemContainerGenerator.Containers.Any())
                 {
                     var containers = CompletionList.ListBox.ItemContainerGenerator.Containers;
                     double itemHeight = containers.First()?.ContainerControl.Bounds.Height ?? 20;
@@ -166,6 +154,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (!IsOpen) return;
             base.OnKeyDown(e);
             if (!e.Handled)
             {
@@ -175,12 +164,14 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void TextArea_PreviewTextInput(object sender, TextInputEventArgs e)
         {
+            if (!IsOpen) return;
             e.Handled = RaiseEventPair(this, null, TextInputEvent,
-                                       new TextInputEventArgs { Device = e.Device, Text = e.Text });
+                                   new TextInputEventArgs { Device = e.Device, Text = e.Text });
         }
 
         private void TextArea_MouseWheel(object sender, PointerWheelEventArgs e)
         {
+            if (!IsOpen) return;
             e.Handled = RaiseEventPair(GetScrollEventTarget(),
                                        null, PointerWheelChangedEvent, e);
         }
@@ -216,13 +207,13 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 if (CloseAutomatically && CloseWhenCaretAtBeginning)
                 {
-                    Hide();
+                    Collapse();
                 }
                 else
                 {
                     CompletionList.SelectItem(string.Empty);
 
-                    if (CompletionList.ListBox.ItemCount == 0) Hide();
+                    if (CompletionList.ListBox.ItemCount == 0) Collapse();
                     else Show();
                 }
                 return;
@@ -231,7 +222,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 if (CloseAutomatically)
                 {
-                    Hide();
+                    Collapse();
                 }
             }
             else
@@ -241,7 +232,7 @@ namespace AvaloniaEdit.CodeCompletion
                 {
                     CompletionList.SelectItem(document.GetText(StartOffset, offset - StartOffset));
 
-                    if (CompletionList.ListBox.ItemCount == 0) Hide();
+                    if (CompletionList.ListBox.ItemCount == 0) Collapse();
                     else Show();
                 }
             }
@@ -249,8 +240,14 @@ namespace AvaloniaEdit.CodeCompletion
 
         public void Show(string e)
         {
-            base.Show();
             if(!string.IsNullOrEmpty(e)) CompletionList.SelectItem(e);
+            if(CompletionList.ListBox.ItemCount > 0) base.Show();
+        }
+
+        public void Collapse()
+        {
+            Hide();
+            CompletionList.CompletionData.Clear();
         }
     }
 }

@@ -90,22 +90,11 @@ namespace AvaloniaEdit.CodeCompletion
             
             //Deactivated += OnDeactivated; //Not needed?
 
-            Closed += (sender, args) => DetachEvents();
+            //Closed += (sender, args) => DetachEvents();
 
             AttachEvents();
-
-            Initailize();
         }
-
-        protected virtual void OnClosed()
-        {
-            DetachEvents();
-        }
-
-        private void Initailize()
-        {
-            SetPosition();
-        }
+        
 
         protected void SetPosition()
         {
@@ -125,13 +114,13 @@ namespace AvaloniaEdit.CodeCompletion
             Height = double.NaN;
             MinHeight = 0;
 
+            SetPosition();
             UpdatePosition();
         }
 
         public void Hide()
         {
             Close();
-            OnClosed();
         }
 
         #region Event Handlers
@@ -415,6 +404,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 Hide(); // removal immediately in front of completion segment: close the window
                         // this is necessary when pressing backspace after dot-completion
+                return;
             }
             if (e.Offset == StartOffset && e.RemovalLength == 0 && ExpectInsertionBeforeStart)
             {
