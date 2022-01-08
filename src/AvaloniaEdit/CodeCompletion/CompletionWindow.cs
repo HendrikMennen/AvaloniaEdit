@@ -241,7 +241,7 @@ namespace AvaloniaEdit.CodeCompletion
         public void Show(string e)
         {
             if(!string.IsNullOrEmpty(e)) CompletionList.SelectItem(e);
-            if(CompletionList.ListBox.ItemCount > 0) base.Show();
+            if(CompletionList.ListBox.ItemCount > 0) Show();
         }
 
         public void Collapse()

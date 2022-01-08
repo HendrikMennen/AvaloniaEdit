@@ -84,10 +84,11 @@ namespace AvaloniaEdit.CodeCompletion
             base.OnApplyTemplate(e);
 
             _listBox = e.NameScope.Find("PART_ListBox") as CompletionListBox;
-            if (_listBox != null)
+
+            _completionData.CollectionChanged += (o, i) =>
             {
                 _listBox.Items = _completionData;
-            }
+            };
         }
 
         /// <summary>
@@ -447,7 +448,7 @@ namespace AvaloniaEdit.CodeCompletion
         public void Reset()
         {
             CompletionData.Clear();
-            _currentText = "";
+            _currentText = null;
         }
     }
 }

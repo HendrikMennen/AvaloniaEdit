@@ -108,7 +108,7 @@ namespace AvaloniaEdit.CodeCompletion
             }
         }
 
-        public void Show()
+        public virtual void Show()
         {
             Open();
             Height = double.NaN;
