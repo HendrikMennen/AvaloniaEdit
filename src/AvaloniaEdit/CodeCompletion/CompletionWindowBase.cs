@@ -110,12 +110,12 @@ namespace AvaloniaEdit.CodeCompletion
 
         public virtual void Show()
         {
-            Open();
             Height = double.NaN;
             MinHeight = 0;
 
             SetPosition();
             UpdatePosition();
+            Open();
         }
 
         public void Hide()
