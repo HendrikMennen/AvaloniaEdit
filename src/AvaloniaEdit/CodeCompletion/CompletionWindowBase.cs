@@ -121,6 +121,12 @@ namespace AvaloniaEdit.CodeCompletion
         public void Hide()
         {
             Close();
+            OnHide();
+        }
+
+        protected virtual void OnHide()
+        {
+            
         }
 
         #region Event Handlers

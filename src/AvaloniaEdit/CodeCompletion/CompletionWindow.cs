@@ -244,6 +244,12 @@ namespace AvaloniaEdit.CodeCompletion
             if(CompletionList.ListBox.ItemCount > 0) Show();
         }
 
+        protected override void OnHide()
+        {
+            base.OnHide();
+            _toolTip.IsOpen = false;
+        }
+
         public void Collapse()
         {
             Hide();
