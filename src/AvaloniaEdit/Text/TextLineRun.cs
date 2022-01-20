@@ -361,6 +361,7 @@ namespace AvaloniaEdit.Text
 
             internal double GetAt(int index)
             {
+                if (index >= _glyphWidths.Length) return 0;
                 if (_glyphWidths[index] == NOT_CALCULATED_YET)
                     _glyphWidths[index] = MeasureGlyphAt(index);
 
