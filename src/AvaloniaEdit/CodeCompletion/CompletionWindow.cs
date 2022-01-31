@@ -77,7 +77,7 @@ namespace AvaloniaEdit.CodeCompletion
 
         #region ToolTip handling
 
-        private void CompletionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UpdateTooltip(object sender, EventArgs e)
         {
             if (_toolTipContent == null) return;
 
@@ -133,7 +133,8 @@ namespace AvaloniaEdit.CodeCompletion
         private void AttachEvents()
         {
             CompletionList.InsertionRequested += CompletionList_InsertionRequested;
-            CompletionList.SelectionChanged += CompletionList_SelectionChanged;
+            CompletionList.SelectionChanged += UpdateTooltip;
+            this.Opened += UpdateTooltip;
             CompletionList.ListBox.PropertyChanged += CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged += CaretPositionChanged;
             TextArea.PointerWheelChanged += TextArea_MouseWheel;
@@ -144,7 +145,8 @@ namespace AvaloniaEdit.CodeCompletion
         protected override void DetachEvents()
         {
             CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
-            CompletionList.SelectionChanged -= CompletionList_SelectionChanged;
+            CompletionList.SelectionChanged -= UpdateTooltip;
+            this.Opened -= UpdateTooltip;
             CompletionList.ListBox.PropertyChanged -= CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged -= CaretPositionChanged;
             TextArea.PointerWheelChanged -= TextArea_MouseWheel;
