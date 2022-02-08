@@ -22,6 +22,7 @@ using Avalonia;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace AvaloniaEdit.Editing
 {
@@ -61,6 +62,12 @@ namespace AvaloniaEdit.Editing
 
         // automatically set/unset TextView property using ITextViewConnect
         private bool _wasAutoAddedToTextView;
+
+        protected override void OnPointerMoved(PointerEventArgs e)
+        {
+            TextArea.Cursor = Cursor.Default;
+            base.OnPointerMoved(e);
+        }
 
         void ITextViewConnect.AddToTextView(TextView textView)
         {
