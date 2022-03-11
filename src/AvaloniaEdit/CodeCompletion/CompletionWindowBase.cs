@@ -77,7 +77,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// Creates a new CompletionWindowBase.
         /// </summary>
         public CompletionWindowBase(TextArea textArea) : base()
-        {     
+        {
             TextArea = textArea ?? throw new ArgumentNullException(nameof(textArea));
             _parentWindow = textArea.GetVisualRoot() as Window;
 
@@ -87,7 +87,12 @@ namespace AvaloniaEdit.CodeCompletion
             AddHandler(PointerReleasedEvent, OnMouseUp, handledEventsToo: true);
 
             StartOffset = EndOffset = TextArea.Caret.Offset;
-            
+
+            PlacementTarget = TextArea.TextView;
+            PlacementMode = PlacementMode.AnchorAndGravity;
+            PlacementAnchor = Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.TopLeft;
+            PlacementGravity = Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.BottomRight;
+
             //Deactivated += OnDeactivated; //Not needed?
 
             //Closed += (sender, args) => DetachEvents();
@@ -209,7 +214,7 @@ namespace AvaloniaEdit.CodeCompletion
                 base.Detach();
                 Window.Hide();
             }
-            
+
             public override void OnPreviewKeyDown(KeyEventArgs e)
             {
                 // prevents crash when typing deadchar while CC window is open
@@ -379,10 +384,8 @@ namespace AvaloniaEdit.CodeCompletion
 
             var position = _visualLocation - textView.ScrollOffset + AdditionalOffset;
 
-            PlacementTarget = textView;
-            PlacementMode = PlacementMode.AnchorAndGravity;
-            HorizontalOffset = position.X;
-            VerticalOffset = position.Y;
+            this.HorizontalOffset = position.X;
+            this.VerticalOffset = position.Y;
         }
 
         // TODO: check if needed
