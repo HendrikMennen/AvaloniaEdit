@@ -81,10 +81,6 @@ namespace AvaloniaEdit.Editing
             AddBinding(ApplicationCommands.Cut, OnCut, CanCut);
             AddBinding(ApplicationCommands.Paste, OnPaste, CanPaste);
 
-            AddBinding(ApplicationCommands.CopyAlternative, OnCopy, CanCutOrCopy);
-            AddBinding(ApplicationCommands.CutAlternative, OnCut, CanCutOrCopy);
-            AddBinding(ApplicationCommands.PasteAlternative, OnPaste, CanPaste);
-
             AddBinding(AvaloniaEditCommands.ToggleOverstrike, OnToggleOverstrike);
             AddBinding(AvaloniaEditCommands.DeleteLine, OnDeleteLine);
 
