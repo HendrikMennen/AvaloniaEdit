@@ -50,7 +50,7 @@
                         <Popup Name="PART_MessageView"
                                Classes="ToolTip"
                                PlacementMode="Bottom"
-                               IsLightDismissEnabled="True"
+                               IsLightDismissEnabled="False"
                                Focusable="False"
                                IsOpen="False">
                             <ContentPresenter Name="PART_MessageContent" />
