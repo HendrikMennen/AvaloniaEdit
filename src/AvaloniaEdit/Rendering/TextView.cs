@@ -2023,7 +2023,7 @@ namespace AvaloniaEdit.Rendering
         /// </summary>
         public IPen ColumnRulerPen
         {
-            get => (Pen)GetValue(ColumnRulerPenProperty);
+            get => (ImmutablePen)GetValue(ColumnRulerPenProperty);
             set => SetValue(ColumnRulerPenProperty, value);
         }
 
