@@ -143,7 +143,7 @@ namespace AvaloniaEdit.Search
         /// Dependency property for <see cref="MarkerBrush"/>.
         /// </summary>
         public static readonly StyledProperty<IBrush> MarkerBrushProperty =
-            AvaloniaProperty.Register<SearchPanel, IBrush>(nameof(MarkerBrush), (SolidColorBrush)(new BrushConverter().ConvertFrom("#50bf7e28")));
+            AvaloniaProperty.Register<SearchPanel, IBrush>(nameof(MarkerBrush), (IBrush)(new BrushConverter().ConvertFrom("#50bf7e28")));
 
         /// <summary>
         /// Gets/sets the Brush used for marking search results in the TextView.
