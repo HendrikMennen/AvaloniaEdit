@@ -53,6 +53,8 @@ namespace AvaloniaEdit.Search
         public static readonly StyledProperty<bool> UseRegexProperty =
             AvaloniaProperty.Register<SearchPanel, bool>(nameof(UseRegex));
 
+        public event EventHandler<IEnumerable<SearchResult>> OnSearch;
+
         /// <summary>
         /// Gets/sets whether the search pattern should be interpreted as regular expression.
         /// </summary>
@@ -436,6 +438,7 @@ namespace AvaloniaEdit.Search
                     _messageView.IsOpen = false;
             }
 
+            OnSearch?.Invoke(this, _renderer.CurrentResults);
             _textArea.TextView.InvalidateLayer(KnownLayer.Selection);
         }
 
@@ -509,6 +512,8 @@ namespace AvaloniaEdit.Search
             _renderer.CurrentResults.Clear();
 
             _textArea.Focus();
+            
+            OnSearch?.Invoke(this,_renderer.CurrentResults);
         }
 
         /// <summary>
