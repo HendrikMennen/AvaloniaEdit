@@ -1441,6 +1441,13 @@ namespace AvaloniaEdit.Rendering
             {
                 vector = new Vector(vector.X, 0);
             }
+            
+            var maxY = _scrollExtent.Height - Bounds.Height;
+            var maxX = _scrollExtent.Width - Bounds.Width;
+            if (vector.Y > maxY) vector = vector.WithY(maxY);
+            if (vector.X > maxX) vector = vector.WithX(maxX);
+            if (vector.Y < 0) vector = vector.WithY(0);
+            if (vector.X < 0) vector = vector.WithX(0);
 
             if (!_scrollOffset.IsClose(vector))
             {
