@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using AvaloniaEdit.Document;
@@ -762,6 +763,7 @@ namespace AvaloniaEdit.Rendering
         {
             VisualLine = visualLine;
             LineHeight = VisualLine.TextLines.Sum(textLine => textLine.Height);
+            IsHitTestVisible = false;
         }
 
         public override void Render(DrawingContext context)
