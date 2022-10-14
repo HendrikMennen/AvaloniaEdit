@@ -541,7 +541,7 @@ namespace AvaloniaEdit.Editing
         /// The <see cref="SelectionCornerRadius"/> property.
         /// </summary>
         public static readonly StyledProperty<double> SelectionCornerRadiusProperty =
-            AvaloniaProperty.Register<TextArea, double>("SelectionCornerRadius", 3.0);
+            AvaloniaProperty.Register<TextArea, double>("SelectionCornerRadius", 0);
 
         /// <summary>
         /// Gets/Sets the corner radius of the selection.
