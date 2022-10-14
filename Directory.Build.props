@@ -5,6 +5,6 @@
     <AvaloniaVersion>11.0.0-preview2</AvaloniaVersion>
     <TextMateSharpVersion>1.0.43</TextMateSharpVersion>
     <NewtonsoftJsonVersion>13.0.1</NewtonsoftJsonVersion>
-    <VersionSuffix>beta</VersionSuffix>
+    <Version>11.0.0-preview2</Version>
   </PropertyGroup>
 </Project>
