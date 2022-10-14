@@ -44,6 +44,7 @@ namespace AvaloniaEdit.Demo
             InitializeComponent();
 
             _textEditor = this.FindControl<TextEditor>("Editor");
+            _textEditor.HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
             _textEditor.Background = Brushes.Transparent;
             _textEditor.ShowLineNumbers = true;
             _textEditor.ContextMenu = new ContextMenu
@@ -173,7 +174,7 @@ namespace AvaloniaEdit.Demo
 
         private void AddControlButton_Click(object sender, RoutedEventArgs e)
         {
-            _generator.controls.Add(new Pair(_textEditor.CaretOffset, new Button() { Content = "Click me" }));
+            _generator.controls.Add(new Pair(_textEditor.CaretOffset, new Button() { Content = "Click me", Cursor = Cursor.Default }));
             _textEditor.TextArea.TextView.Redraw();
         }
 
