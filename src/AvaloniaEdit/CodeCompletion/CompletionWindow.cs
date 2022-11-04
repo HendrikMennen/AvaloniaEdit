@@ -255,8 +255,11 @@ namespace AvaloniaEdit.CodeCompletion
 
         public void Collapse()
         {
-            Hide();
-            CompletionList.CompletionData.Clear();
+            if (IsEffectivelyVisible)
+            {
+                Hide();
+                CompletionList.CompletionData.Clear();
+            }
         }
     }
 }
