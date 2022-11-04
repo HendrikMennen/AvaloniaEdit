@@ -26,6 +26,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using System.ComponentModel;
 using System.Linq;
+using Avalonia.Threading;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -71,7 +72,11 @@ namespace AvaloniaEdit.CodeCompletion
             LogicalChildren.Add(_toolTip);
 
             //_toolTip.Closed += (o, e) => ((Popup)o).Child = null;
+        }
 
+        public override void EndInit()
+        {
+            base.EndInit();
             AttachEvents();
         }
 
@@ -255,11 +260,8 @@ namespace AvaloniaEdit.CodeCompletion
 
         public void Collapse()
         {
-            if (IsEffectivelyVisible)
-            {
-                Hide();
-                CompletionList.CompletionData.Clear();
-            }
+            Hide();
+            CompletionList.CompletionData.Clear();
         }
     }
 }
