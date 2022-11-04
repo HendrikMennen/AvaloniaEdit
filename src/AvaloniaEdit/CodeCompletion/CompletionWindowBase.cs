@@ -112,7 +112,7 @@ namespace AvaloniaEdit.CodeCompletion
                 SetPosition(TextArea.Caret.Position);
             }
         }
-
+        
         public virtual void Show()
         {
             Height = double.NaN;
