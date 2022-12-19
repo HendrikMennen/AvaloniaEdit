@@ -249,17 +249,23 @@ namespace AvaloniaEdit.Document
         /// <summary>
         /// Throws an InvalidOperationException if an undo group is current open.
         /// </summary>
-        private void ThrowIfUndoGroupOpen()
+        private bool ThrowIfUndoGroupOpen()
         {
             if (_undoGroupDepth != 0)
             {
                 _undoGroupDepth = 0;
-                throw new InvalidOperationException("No undo group should be open at this point");
+                //throw new InvalidOperationException("No undo group should be open at this point");
+                Console.WriteLine("No undo group should be open at this point");
+                return true;
             }
             if (State != StateListen)
             {
-                throw new InvalidOperationException("This method cannot be called while an undo operation is being performed");
+                //throw new InvalidOperationException("This method cannot be called while an undo operation is being performed");
+                Console.WriteLine("This method cannot be called while an undo operation is being performed");
+                return true;
             }
+
+            return false;
         }
 
         private List<TextDocument> _affectedDocuments;
@@ -292,7 +298,7 @@ namespace AvaloniaEdit.Document
         /// </summary>
         public void Undo()
         {
-            ThrowIfUndoGroupOpen();
+            if(ThrowIfUndoGroupOpen()) return;
             if (_undostack.Count > 0)
             {
                 // disallow continuing undo groups after undo operation
@@ -332,7 +338,7 @@ namespace AvaloniaEdit.Document
         /// </summary>
         public void Redo()
         {
-            ThrowIfUndoGroupOpen();
+            if(ThrowIfUndoGroupOpen()) return;
             if (_redostack.Count > 0)
             {
                 LastGroupDescriptor = null;
