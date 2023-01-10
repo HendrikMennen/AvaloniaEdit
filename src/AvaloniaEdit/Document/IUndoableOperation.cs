@@ -16,6 +16,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using AvaloniaEdit.Editing;
+
 namespace AvaloniaEdit.Document
 {
 	/// <summary>
@@ -27,17 +29,17 @@ namespace AvaloniaEdit.Document
 		/// <summary>
 		/// Undo the last operation
 		/// </summary>
-		void Undo();
+		void Undo(TextArea textArea);
 		
 		/// <summary>
 		/// Redo the last operation
 		/// </summary>
-		void Redo();
+		void Redo(TextArea textArea);
 	}
 	
 	interface IUndoableOperationWithContext : IUndoableOperation
 	{
-		void Undo(UndoStack stack);
-		void Redo(UndoStack stack);
+		void Undo(UndoStack stack, TextArea textArea);
+		void Redo(UndoStack stack, TextArea textArea);
 	}
 }

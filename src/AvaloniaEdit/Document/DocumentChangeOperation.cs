@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Diagnostics;
+using AvaloniaEdit.Editing;
 
 namespace AvaloniaEdit.Document
 {
@@ -34,31 +35,31 @@ namespace AvaloniaEdit.Document
 			_change = change;
 		}
 		
-		public void Undo(UndoStack stack)
+		public void Undo(UndoStack stack, TextArea textArea)
 		{
 			Debug.Assert(stack.State == UndoStack.StatePlayback);
 			stack.RegisterAffectedDocument(_document);
 			stack.State = UndoStack.StatePlaybackModifyDocument;
-			Undo();
+			Undo(textArea);
 			stack.State = UndoStack.StatePlayback;
 		}
 		
-		public void Redo(UndoStack stack)
+		public void Redo(UndoStack stack, TextArea textArea)
 		{
 			Debug.Assert(stack.State == UndoStack.StatePlayback);
 			stack.RegisterAffectedDocument(_document);
 			stack.State = UndoStack.StatePlaybackModifyDocument;
-			Redo();
+			Redo(textArea);
 			stack.State = UndoStack.StatePlayback;
 		}
 		
-		public void Undo()
+		public void Undo(TextArea textArea)
 		{
 			var map = _change.OffsetChangeMapOrNull;
 			_document.Replace(_change.Offset, _change.InsertionLength, _change.RemovedText, map?.Invert());
 		}
 		
-		public void Redo()
+		public void Redo(TextArea textArea)
 		{
 			_document.Replace(_change.Offset, _change.RemovalLength, _change.InsertedText, _change.OffsetChangeMapOrNull);
 		}

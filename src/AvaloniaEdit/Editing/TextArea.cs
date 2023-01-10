@@ -365,6 +365,7 @@ namespace AvaloniaEdit.Editing
 
         private void OnDocumentChanged(object sender, DocumentChangeEventArgs e)
         {
+            if (Document == null) return;
             Caret.OnDocumentChanged(e);
             Selection = _selection.UpdateOnDocumentChange(e);
         }
@@ -381,24 +382,19 @@ namespace AvaloniaEdit.Editing
 
         private sealed class RestoreCaretAndSelectionUndoAction : IUndoableOperation
         {
-            // keep textarea in weak reference because the IUndoableOperation is stored with the document
-            private readonly WeakReference _textAreaReference;
-
             private readonly TextViewPosition _caretPosition;
             private readonly Selection _selection;
 
             public RestoreCaretAndSelectionUndoAction(TextArea textArea)
             {
-                _textAreaReference = new WeakReference(textArea);
                 // Just save the old caret position, no need to validate here.
                 // If we restore it, we'll validate it anyways.
                 _caretPosition = textArea.Caret.NonValidatedPosition;
                 _selection = textArea.Selection;
             }
 
-            public void Undo()
+            public void Undo(TextArea textArea)
             {
-                var textArea = (TextArea)_textAreaReference.Target;
                 if (textArea != null)
                 {
                     textArea.Caret.Position = _caretPosition;
@@ -406,10 +402,10 @@ namespace AvaloniaEdit.Editing
                 }
             }
 
-            public void Redo()
+            public void Redo(TextArea textArea)
             {
                 // redo=undo: we just restore the caret/selection state
-                Undo();
+                Undo(textArea);
             }
         }
         #endregion
@@ -443,8 +439,8 @@ namespace AvaloniaEdit.Editing
             {
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
-                if (value.TextArea != this)
-                    throw new ArgumentException("Cannot use a Selection instance that belongs to another text area.");
+                //if (value.TextArea != this)
+                //    throw new ArgumentException("Cannot use a Selection instance that belongs to another text area.");
                 if (!Equals(_selection, value))
                 {
                     if (TextView != null)

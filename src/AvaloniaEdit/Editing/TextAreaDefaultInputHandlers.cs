@@ -86,7 +86,7 @@ namespace AvaloniaEdit.Editing
             {
                 if (undoStack.CanUndo)
                 {
-                    undoStack.Undo();
+                    undoStack.Undo(TextArea);
                     TextArea.Caret.BringCaretToView();
                 }
                 e.Handled = true;
@@ -110,7 +110,7 @@ namespace AvaloniaEdit.Editing
             {
                 if (undoStack.CanRedo)
                 {
-                    undoStack.Redo();
+                    undoStack.Redo(TextArea);
                     TextArea.Caret.BringCaretToView();
                 }
                 e.Handled = true;

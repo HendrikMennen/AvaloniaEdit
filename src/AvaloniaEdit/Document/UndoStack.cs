@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using AvaloniaEdit.Editing;
 using AvaloniaEdit.Utils;
 
 namespace AvaloniaEdit.Document
@@ -296,7 +297,7 @@ namespace AvaloniaEdit.Document
         /// <summary>
         /// Call this method to undo the last operation on the stack
         /// </summary>
-        public void Undo()
+        public void Undo(TextArea textArea)
         {
             if(ThrowIfUndoGroupOpen()) return;
             if (_undostack.Count > 0)
@@ -309,7 +310,7 @@ namespace AvaloniaEdit.Document
                 State = StatePlayback;
                 try
                 {
-                    RunUndo(uedit);
+                    RunUndo(uedit, textArea);
                 }
                 finally
                 {
@@ -325,18 +326,18 @@ namespace AvaloniaEdit.Document
             }
         }
 
-        internal void RunUndo(IUndoableOperation op)
+        internal void RunUndo(IUndoableOperation op, TextArea textArea)
         {
             if (op is IUndoableOperationWithContext opWithCtx)
-                opWithCtx.Undo(this);
+                opWithCtx.Undo(this, textArea);
             else
-                op.Undo();
+                op.Undo(textArea);
         }
 
         /// <summary>
         /// Call this method to redo the last undone operation
         /// </summary>
-        public void Redo()
+        public void Redo(TextArea textArea)
         {
             if(ThrowIfUndoGroupOpen()) return;
             if (_redostack.Count > 0)
@@ -348,7 +349,7 @@ namespace AvaloniaEdit.Document
                 State = StatePlayback;
                 try
                 {
-                    RunRedo(uedit);
+                    RunRedo(uedit, textArea);
                 }
                 finally
                 {
@@ -364,12 +365,12 @@ namespace AvaloniaEdit.Document
             }
         }
 
-        internal void RunRedo(IUndoableOperation op)
+        internal void RunRedo(IUndoableOperation op, TextArea textArea)
         {
             if (op is IUndoableOperationWithContext opWithCtx)
-                opWithCtx.Redo(this);
+                opWithCtx.Redo(this, textArea);
             else
-                op.Redo();
+                op.Redo(textArea);
         }
 
         /// <summary>

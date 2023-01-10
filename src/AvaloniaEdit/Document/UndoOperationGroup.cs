@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics;
+using AvaloniaEdit.Editing;
 using AvaloniaEdit.Utils;
 
 namespace AvaloniaEdit.Document
@@ -45,33 +46,33 @@ namespace AvaloniaEdit.Document
 			}
 		}
 		
-		public void Undo()
+		public void Undo(TextArea textArea)
 		{
 		    foreach (var t in _undolist)
 		    {
-		        t.Undo();
+		        t.Undo(textArea);
 		    }
 		}
 		
-		public void Undo(UndoStack stack)
+		public void Undo(UndoStack stack, TextArea textArea)
 		{
 		    foreach (var t in _undolist)
 		    {
-		        stack.RunUndo(t);
+		        stack.RunUndo(t, textArea);
 		    }
 		}
 		
-		public void Redo()
+		public void Redo(TextArea textArea)
 		{
 			for (var i = _undolist.Length - 1; i >= 0; --i) {
-				_undolist[i].Redo();
+				_undolist[i].Redo(textArea);
 			}
 		}
 		
-		public void Redo(UndoStack stack)
+		public void Redo(UndoStack stack, TextArea textArea)
 		{
 			for (var i = _undolist.Length - 1; i >= 0; --i) {
-				stack.RunRedo(_undolist[i]);
+				stack.RunRedo(_undolist[i], textArea);
 			}
 		}
 	}
