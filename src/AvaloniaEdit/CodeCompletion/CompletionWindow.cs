@@ -128,7 +128,7 @@ namespace AvaloniaEdit.CodeCompletion
             // If the Complete callback pushes stacked input handlers, we don't want to pop those when the CC window closes.
             var item = CompletionList.SelectedItem;
             item?.Complete(TextArea, new AnchorSegment(TextArea.Document, StartOffset, EndOffset - StartOffset), e);
-            Collapse();
+            CompletionList.CompletionData.Clear();
         }
 
         private void AttachEvents()
