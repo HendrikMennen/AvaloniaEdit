@@ -365,7 +365,7 @@ namespace AvaloniaEdit.Editing
 
         private void OnDocumentChanged(object sender, DocumentChangeEventArgs e)
         {
-            if (Document == null) return;
+            if (Document == null || !Equals(Selection.TextArea, this)) return;
             Caret.OnDocumentChanged(e);
             Selection = _selection.UpdateOnDocumentChange(e);
         }
