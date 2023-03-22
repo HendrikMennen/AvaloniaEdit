@@ -36,7 +36,7 @@ namespace AvaloniaEdit.Search
         {
             _markerBrush = brush;
             _markerBrush = (IBrush)(new BrushConverter().ConvertFrom("#50bf7e30"));
-            _markerPen = new Pen(_markerBrush);
+            //_markerPen = new Pen(_markerBrush);
         }
 
         private IBrush _markerBrush;

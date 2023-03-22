@@ -1954,7 +1954,7 @@ namespace AvaloniaEdit.Rendering
 
         bool ILogicalScrollable.BringIntoView(Control target, Rect rectangle)
         {
-            if (rectangle.IsEmpty || target == null || target == this || !this.IsVisualAncestorOf(target))
+            if (rectangle == new Rect() || target == null || target == this || !this.IsVisualAncestorOf(target))
             {
                 return false;
             }

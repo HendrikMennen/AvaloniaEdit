@@ -1150,7 +1150,7 @@ namespace AvaloniaEdit.Editing
                 {   
                     if(_textArea == null)
                     {
-                        return Rect.Empty;
+                        return new Rect();
                     }
 
                     var transform = _textArea.TextView.TransformToVisual(_textArea);

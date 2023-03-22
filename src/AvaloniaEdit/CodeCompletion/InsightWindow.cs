@@ -67,11 +67,6 @@ namespace AvaloniaEdit.CodeCompletion
             base.DetachEvents();
         }
 
-        private void CompletionList_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if (e.Property == TemplatedControl.FontSizeProperty) SetPosition();
-        }
-
         private void CaretPositionChanged(object sender, EventArgs e)
         {
             if (CloseAutomatically)

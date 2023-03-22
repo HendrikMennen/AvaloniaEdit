@@ -89,20 +89,7 @@ namespace AvaloniaEdit.CodeCompletion
                 _toolTipContent.Content = description;
 
                 _toolTip.IsOpen = false; //Popup needs to be closed to change position
-
                 
-                //Calculate offset for tooltip
-                if (CompletionList.CurrentList != null && CompletionList.ListBox.ItemContainerGenerator.Containers.Any())
-                {
-                    var containers = CompletionList.ListBox.ItemContainerGenerator.Containers;
-                    double itemHeight = containers.First()?.ContainerControl.Bounds.Height ?? 20;
-                    int index = CompletionList.CurrentList.IndexOf(item);
-                    int scrollIndex = (int)CompletionList.ListBox.Scroll.Offset.Y;
-                    int yoffset = index - scrollIndex;
-                    if (yoffset < 0) yoffset = 0;
-                    if ((yoffset + 1) * itemHeight > MaxHeight) yoffset--;
-                    _toolTip.Offset = new PixelPoint(2, (int)(yoffset * itemHeight)); //Todo find way to measure item height
-                }
 
                 _toolTip.PlacementTarget = this.Host as PopupRoot;
                 _toolTip.IsOpen = true;                    
