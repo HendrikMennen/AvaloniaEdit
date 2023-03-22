@@ -22,7 +22,6 @@ using Avalonia;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
 using Avalonia.Controls;
-using Avalonia.Input;
 
 namespace AvaloniaEdit.Editing
 {

@@ -22,11 +22,10 @@ using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Utilities;
 using AvaloniaEdit.Utils;
-using JetBrains.Annotations;
 
 namespace AvaloniaEdit.Rendering
 {
-  	/// <summary>
+	/// <summary>
 	/// Formatted text (not normal document text).
 	/// This is used as base class for various VisualLineElements that are displayed using a
 	/// FormattedText, for example newline markers or collapsed folding sections.
@@ -119,7 +118,7 @@ namespace AvaloniaEdit.Rendering
 		/// </summary>
 		public FormattedTextElement Element { get; }
 
-		public override ReadOnlySlice<char> Text { get; }
+		public override ReadOnlyMemory<char> Text { get; }
 
 		/// <inheritdoc/>
 		public override TextRunProperties Properties { get; }

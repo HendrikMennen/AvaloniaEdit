@@ -16,10 +16,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Platform;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AvaloniaEdit
 {
@@ -105,27 +106,17 @@ namespace AvaloniaEdit
 
         public static RoutedCommand Delete { get; } = new RoutedCommand(nameof(Delete), new KeyGesture(Key.Delete));
         public static RoutedCommand Copy { get; } = new RoutedCommand(nameof(Copy), new KeyGesture(Key.C, PlatformCommandKey));
-        public static RoutedCommand CopyAlternative { get; } = new RoutedCommand(nameof(CopyAlternative), new KeyGesture(Key.Insert, PlatformCommandKey));
         public static RoutedCommand Cut { get; } = new RoutedCommand(nameof(Cut), new KeyGesture(Key.X, PlatformCommandKey));
-        public static RoutedCommand CutAlternative { get; } = new RoutedCommand(nameof(CutAlternative), new KeyGesture(Key.Delete, KeyModifiers.Shift));
         public static RoutedCommand Paste { get; } = new RoutedCommand(nameof(Paste), new KeyGesture(Key.V, PlatformCommandKey));
-        public static RoutedCommand PasteAlternative { get; } = new RoutedCommand(nameof(PasteAlternative), new KeyGesture(Key.Insert, KeyModifiers.Shift));
         public static RoutedCommand SelectAll { get; } = new RoutedCommand(nameof(SelectAll), new KeyGesture(Key.A, PlatformCommandKey));
         public static RoutedCommand Undo { get; } = new RoutedCommand(nameof(Undo), new KeyGesture(Key.Z, PlatformCommandKey));
         public static RoutedCommand Redo { get; } = new RoutedCommand(nameof(Redo), new KeyGesture(Key.Y, PlatformCommandKey));
         public static RoutedCommand Find { get; } = new RoutedCommand(nameof(Find), new KeyGesture(Key.F, PlatformCommandKey));
         public static RoutedCommand Replace { get; } = new RoutedCommand(nameof(Replace), GetReplaceKeyGesture());
-
-        private static OperatingSystemType GetOperatingSystemType()
-        {
-            return AvaloniaLocator.Current.GetService<IRuntimePlatform>().GetRuntimeInfo().OperatingSystem;
-        }
         
         private static KeyModifiers GetPlatformCommandKey()
-        {
-            var os = GetOperatingSystemType();
-            
-            if (os == OperatingSystemType.OSX)
+        {            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return KeyModifiers.Meta;
             }
@@ -135,9 +126,7 @@ namespace AvaloniaEdit
 
         private static KeyGesture GetReplaceKeyGesture()
         {
-            var os = GetOperatingSystemType();
-
-            if (os == OperatingSystemType.OSX)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return new KeyGesture(Key.F, KeyModifiers.Meta | KeyModifiers.Alt);
             }

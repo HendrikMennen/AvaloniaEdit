@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -306,7 +304,7 @@ namespace AvaloniaEdit.Utils
             {
                 Interlocked.Increment(ref _deliveries);
 
-                return Disposable.Create(() => Interlocked.Decrement(ref _deliveries));
+                return new Disposable(() => Interlocked.Decrement(ref _deliveries));
             }
 
             // ReSharper disable once MemberHidesStaticFromOuterClass
@@ -340,6 +338,20 @@ namespace AvaloniaEdit.Utils
                     }
                 }
             }
+        }
+    }
+
+    internal sealed class Disposable : IDisposable
+    {
+        private volatile Action _dispose;
+        public Disposable(Action dispose)
+        {
+            _dispose = dispose;
+        }
+        public bool IsDisposed => _dispose == null;
+        public void Dispose()
+        {
+            Interlocked.Exchange(ref _dispose, null)?.Invoke();
         }
     }
 }

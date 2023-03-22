@@ -24,13 +24,11 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -40,7 +38,6 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 using AvaloniaEdit.Document;
-using AvaloniaEdit.Editing;
 using AvaloniaEdit.Utils;
 
 namespace AvaloniaEdit.Rendering
@@ -1209,7 +1206,7 @@ namespace AvaloniaEdit.Rendering
                                 Debug.WriteLine(distance);
                             }
 
-                            offset += span.TextSourceLength;
+                            offset += span.Length;
                         }
                         pos = new Point(pos.X, pos.Y + textLine.Height);
                     }
@@ -1955,7 +1952,7 @@ namespace AvaloniaEdit.Rendering
             return pen;
         }
 
-        bool ILogicalScrollable.BringIntoView(IControl target, Rect rectangle)
+        bool ILogicalScrollable.BringIntoView(Control target, Rect rectangle)
         {
             if (rectangle.IsEmpty || target == null || target == this || !this.IsVisualAncestorOf(target))
             {
@@ -1972,7 +1969,7 @@ namespace AvaloniaEdit.Rendering
             return true;
         }
 
-        IControl ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl from)
+        Control ILogicalScrollable.GetControlInDirection(NavigationDirection direction, Control from)
         {
             return null;
         }
