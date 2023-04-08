@@ -65,8 +65,9 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 IsLightDismissEnabled = true,
                 PlacementTarget = this,
-                Placement = PlacementMode.Right,
+                Placement = PlacementMode.RightEdgeAlignedTop,
                 Child = _toolTipContent,
+                Offset = new PixelPoint(18, 0),
             };
 
             LogicalChildren.Add(_toolTip);
@@ -79,32 +80,23 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void UpdateTooltip(object sender, EventArgs e)
         {
+            
             if (_toolTipContent == null) return;
 
             var item = CompletionList.SelectedItem;
             var description = item?.Description;
+            
             if (description != null)
             {
                 _toolTipContent.Content = description;
 
-                _toolTip.IsOpen = false; //Popup needs to be closed to change position
+                var selectedContainer = CompletionList.ListBox.ContainerFromIndex(CompletionList.ListBox.SelectedIndex);
 
-                
-                //Calculate offset for tooltip
-                // if (CompletionList.CurrentList != null && CompletionList.ListBox.ItemContainerGenerator.Containers.Any())
-                // {
-                //     var containers = CompletionList.ListBox.ItemContainerGenerator.Containers;
-                //     double itemHeight = containers.First()?.ContainerControl.Bounds.Height ?? 20;
-                //     int index = CompletionList.CurrentList.IndexOf(item);
-                //     int scrollIndex = (int)CompletionList.ListBox.Scroll.Offset.Y;
-                //     int yoffset = index - scrollIndex;
-                //     if (yoffset < 0) yoffset = 0;
-                //     if ((yoffset + 1) * itemHeight > MaxHeight) yoffset--;
-                //     _toolTip.Offset = new PixelPoint(2, (int)(yoffset * itemHeight)); //Todo find way to measure item height
-                // }
-
-                _toolTip.PlacementTarget = this.Host as PopupRoot;
-                _toolTip.IsOpen = true;                    
+                if (selectedContainer != null)
+                {
+                    _toolTip.PlacementTarget = selectedContainer;
+                    _toolTip.IsOpen = true;
+                }
             }
             else
             {
@@ -133,24 +125,24 @@ namespace AvaloniaEdit.CodeCompletion
         private void AttachEvents()
         {
             CompletionList.InsertionRequested += CompletionList_InsertionRequested;
-            CompletionList.SelectionChanged += UpdateTooltip;
-            this.Opened += UpdateTooltip;
             CompletionList.ListBox.PropertyChanged += CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged += CaretPositionChanged;
             TextArea.PointerWheelChanged += TextArea_MouseWheel;
             TextArea.TextInput += TextArea_PreviewTextInput;
+            Opened += UpdateTooltip;
+            CompletionList.ListBox.SelectionChanged += UpdateTooltip;
         }
 
         /// <inheritdoc/>
         protected override void DetachEvents()
         {
             CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
-            CompletionList.SelectionChanged -= UpdateTooltip;
-            this.Opened -= UpdateTooltip;
             CompletionList.ListBox.PropertyChanged -= CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged -= CaretPositionChanged;
             TextArea.PointerWheelChanged -= TextArea_MouseWheel;
             TextArea.TextInput -= TextArea_PreviewTextInput;
+            Opened -= UpdateTooltip;
+            CompletionList.ListBox.SelectionChanged -= UpdateTooltip;
             base.DetachEvents();
         }
 

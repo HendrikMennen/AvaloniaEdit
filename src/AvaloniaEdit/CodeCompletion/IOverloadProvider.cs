@@ -50,7 +50,5 @@ namespace AvaloniaEdit.CodeCompletion
 		/// Gets the current content.
 		/// </summary>
 		object CurrentContent { get; }
-		
-		IHighlightingDefinition SyntaxHighlighting { get; }
 	}
 }
