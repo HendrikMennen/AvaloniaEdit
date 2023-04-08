@@ -32,7 +32,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// <summary>
         /// Creates a new OverloadInsightWindow.
         /// </summary>
-        public OverloadInsightWindow(TextArea textArea) : base(textArea)
+        public OverloadInsightWindow(TextEditor textEditor) : base(textEditor)
         {
             _overloadViewer.Margin = new Thickness(2, 0, 0, 0);
             Child = _overloadViewer;

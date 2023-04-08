@@ -441,5 +441,11 @@ namespace AvaloniaEdit.CodeCompletion
                 return true;
             return false;
         }
+        
+        public void Reset()
+        {
+            CompletionData.Clear();
+            _currentText = null;
+        }
     }
 }

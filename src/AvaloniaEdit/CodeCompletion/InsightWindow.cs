@@ -29,7 +29,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// <summary>
         /// Creates a new InsightWindow.
         /// </summary>
-        public InsightWindow(TextArea textArea) : base(textArea)
+        public InsightWindow(TextEditor textEditor) : base(textEditor)
         {
             CloseAutomatically = true;
             AttachEvents();

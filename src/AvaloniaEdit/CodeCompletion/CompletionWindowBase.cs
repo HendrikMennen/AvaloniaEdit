@@ -32,6 +32,7 @@ using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Avalonia.Controls.Primitives.PopupPositioning;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -51,6 +52,11 @@ namespace AvaloniaEdit.CodeCompletion
         /// Gets the parent TextArea.
         /// </summary>
         public TextArea TextArea { get; }
+        
+        /// <summary>
+        /// Gets the parent TextEditor
+        /// </summary>
+        public TextEditor TextEditor { get; }
 
         private readonly Window _parentWindow;
         private TextDocument _document;
@@ -75,36 +81,33 @@ namespace AvaloniaEdit.CodeCompletion
         /// <summary>
         /// Creates a new CompletionWindowBase.
         /// </summary>
-        public CompletionWindowBase(TextArea textArea) : base()
+        public CompletionWindowBase(TextEditor textEditor) : base()
         {
-            TextArea = textArea ?? throw new ArgumentNullException(nameof(textArea));
-            _parentWindow = textArea.GetVisualRoot() as Window;
+            TextEditor = textEditor;
+            TextArea = textEditor.TextArea ?? throw new ArgumentNullException(nameof(TextArea));
+            _parentWindow = TextArea.GetVisualRoot() as Window;
 
+            PlacementGravity = PopupGravity.BottomRight;
+            PlacementAnchor = PopupAnchor.TopLeft;
 
             AddHandler(PointerReleasedEvent, OnMouseUp, handledEventsToo: true);
 
             StartOffset = EndOffset = TextArea.Caret.Offset;
 
             PlacementTarget = TextArea.TextView;
-            Placement = PlacementMode.AnchorAndGravity;
+            PlacementMode = PlacementMode.AnchorAndGravity;
             PlacementAnchor = Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.TopLeft;
             PlacementGravity = Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.BottomRight;
 
             //Deactivated += OnDeactivated; //Not needed?
 
-            Closed += (sender, args) => DetachEvents();
+            //Closed += (sender, args) => DetachEvents();
 
             AttachEvents();
-
-            Initailize();
         }
+        
 
-        protected virtual void OnClosed()
-        {
-            DetachEvents();
-        }
-
-        private void Initailize()
+        protected void SetPosition()
         {
             if (_document != null && StartOffset != TextArea.Caret.Offset)
             {
@@ -115,20 +118,26 @@ namespace AvaloniaEdit.CodeCompletion
                 SetPosition(TextArea.Caret.Position);
             }
         }
-
-        public void Show()
+        
+        public virtual void Show()
         {
-            UpdatePosition();
-
-            Open();
             Height = double.NaN;
             MinHeight = 0;
+
+            SetPosition();
+            UpdatePosition();
+            Open();
         }
 
         public void Hide()
         {
             Close();
-            OnClosed();
+            OnHide();
+        }
+
+        protected virtual void OnHide()
+        {
+            
         }
 
         #region Event Handlers
@@ -145,7 +154,7 @@ namespace AvaloniaEdit.CodeCompletion
 
             // LostKeyboardFocus seems to be more reliable than PreviewLostKeyboardFocus - see SD-1729
             TextArea.LostFocus += TextAreaLostFocus;
-            TextArea.TextView.ScrollOffsetChanged += TextViewScrollOffsetChanged;
+            TextArea.TextView.ScrollOffsetChanged += TextViewScrollOffsetChanged;          
             TextArea.DocumentChanged += TextAreaDocumentChanged;
             if (_parentWindow != null)
             {
@@ -169,7 +178,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// </summary>
         protected virtual void DetachEvents()
         {
-            ((ISetLogicalParent)this).SetParent(null);
+            //((ISetLogicalParent)this).SetParent(null);
 
             if (_document != null)
             {
@@ -354,6 +363,10 @@ namespace AvaloniaEdit.CodeCompletion
         private Point _visualLocation;
         private Point _visualLocationTop;
 
+        public Vector AdditionalOffset { get; set; } = Vector.Zero;
+        public VisualYPosition VisualPosition { get; set; } = VisualYPosition.LineBottom;
+
+
         /// <summary>
         /// Positions the completion window at the specified position.
         /// </summary>
@@ -361,7 +374,7 @@ namespace AvaloniaEdit.CodeCompletion
         {
             var textView = TextArea.TextView;
 
-            _visualLocation = textView.GetVisualPosition(position, VisualYPosition.LineBottom);
+            _visualLocation = textView.GetVisualPosition(position, VisualPosition);
             _visualLocationTop = textView.GetVisualPosition(position, VisualYPosition.LineTop);
 
             UpdatePosition();
@@ -375,7 +388,7 @@ namespace AvaloniaEdit.CodeCompletion
         {
             var textView = TextArea.TextView;
 
-            var position = _visualLocation - textView.ScrollOffset;
+            var position = _visualLocation - textView.ScrollOffset + AdditionalOffset;
 
             this.HorizontalOffset = position.X;
             this.VerticalOffset = position.Y;
@@ -406,6 +419,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 Hide(); // removal immediately in front of completion segment: close the window
                         // this is necessary when pressing backspace after dot-completion
+                return;
             }
             if (e.Offset == StartOffset && e.RemovalLength == 0 && ExpectInsertionBeforeStart)
             {

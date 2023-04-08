@@ -68,7 +68,7 @@ namespace AvaloniaEdit.Search
 		}
 	}
 
-    internal class SearchResult : TextSegment, ISearchResult
+    public class SearchResult : TextSegment, ISearchResult
 	{
 		public Match Data { get; set; }
 		

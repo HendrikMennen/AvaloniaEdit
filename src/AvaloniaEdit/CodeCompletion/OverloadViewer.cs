@@ -104,7 +104,7 @@ namespace AvaloniaEdit.CodeCompletion
         }
     }
 
-    internal sealed class CollapseIfSingleOverloadConverter : IValueConverter
+    public sealed class CollapseIfSingleOverloadConverter : IValueConverter
     {
         public static CollapseIfSingleOverloadConverter Instance { get; } = new CollapseIfSingleOverloadConverter();
 

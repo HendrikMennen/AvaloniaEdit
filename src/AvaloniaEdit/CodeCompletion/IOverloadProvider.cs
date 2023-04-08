@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.ComponentModel;
+using AvaloniaEdit.Highlighting;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -49,5 +50,7 @@ namespace AvaloniaEdit.CodeCompletion
 		/// Gets the current content.
 		/// </summary>
 		object CurrentContent { get; }
+		
+		IHighlightingDefinition SyntaxHighlighting { get; }
 	}
 }
