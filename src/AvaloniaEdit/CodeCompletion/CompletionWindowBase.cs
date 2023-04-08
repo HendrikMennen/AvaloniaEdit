@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Avalonia;
+using Avalonia.Animation;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
@@ -81,15 +82,17 @@ namespace AvaloniaEdit.CodeCompletion
             TextArea = textArea ?? throw new ArgumentNullException(nameof(textArea));
             _parentWindow = textArea.GetVisualRoot() as Window;
 
+            
             PlacementGravity = PopupGravity.BottomRight;
             PlacementAnchor = PopupAnchor.TopLeft;
 
             AddHandler(PointerReleasedEvent, OnMouseUp, handledEventsToo: true);
 
             StartOffset = EndOffset = TextArea.Caret.Offset;
-
+            
+            
             PlacementTarget = TextArea.TextView;
-            PlacementMode = PlacementMode.AnchorAndGravity;
+            Placement = PlacementMode.AnchorAndGravity;
             PlacementAnchor = Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.TopLeft;
             PlacementGravity = Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.BottomRight;
 
