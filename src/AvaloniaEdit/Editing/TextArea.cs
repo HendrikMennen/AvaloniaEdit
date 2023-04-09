@@ -1226,7 +1226,7 @@ namespace AvaloniaEdit.Editing
 
                 TextViewVisualChanged?.Invoke(this, EventArgs.Empty);
 
-                CursorRectangleChanged?.Invoke(this, EventArgs.Empty);
+                if(textArea != null) CursorRectangleChanged?.Invoke(this, EventArgs.Empty);
             }
 
             private void Caret_PositionChanged(object sender, EventArgs e)
