@@ -60,8 +60,8 @@
     <Style Selector="search|SearchPanel">
         <Setter Property="BorderThickness" Value="1 0 1 1" />
         <Setter Property="CornerRadius" Value="0 0 4 4" />
-        <Setter Property="BorderBrush" Value="{DynamicResource SearchPanelBorderBrush}" />
-        <Setter Property="Background" Value="{DynamicResource SearchPanelBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+        <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Margin" Value="0 0 18 0" />
         <Setter Property="FontSize" Value="{DynamicResource SearchPanelFontSize}" />
@@ -75,7 +75,7 @@
                         Background="{TemplateBinding Background}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Padding="10">
+                        Padding="5">
                     <Grid ColumnDefinitions="Auto,Auto,Auto"
                           RowDefinitions="Auto,Auto,Auto">
                         <ToggleButton Classes="ExpanderToggle"
@@ -113,8 +113,8 @@
                                                       HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"
                                                       Width="12"
-                                                      Fill="{Binding $parent.Foreground}"
-                                                      Stroke="{Binding $parent.Foreground}"
+                                                      Fill="{DynamicResource ThemeForegroundBrush}"
+                                                      Stroke="{DynamicResource ThemeForegroundBrush}"
                                                       StrokeThickness="1" />
                                             </ToggleButton>
                                             <ToggleButton
@@ -129,8 +129,8 @@
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Width="14"
-                                                    Fill="{Binding $parent.Foreground}"
-                                                    Stroke="{Binding $parent.Foreground}"
+                                                    Fill="{DynamicResource ThemeForegroundBrush}"
+                                                    Stroke="{DynamicResource ThemeForegroundBrush}"
                                                     StrokeThickness="1" />
                                             </ToggleButton>
                                             <ToggleButton
@@ -145,15 +145,15 @@
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Width="12"
-                                                    Fill="{Binding $parent.Foreground}"
-                                                    Stroke="{Binding $parent.Foreground}"
+                                                    Fill="{DynamicResource ThemeForegroundBrush}"
+                                                    Stroke="{DynamicResource ThemeForegroundBrush}"
                                                     StrokeThickness="1" />
                                             </ToggleButton>
                                         </StackPanel>
                                     </TextBox.InnerRightContent>
                                 </TextBox>
                             <Button Margin="5,0,0,0"
-                                    MinWidth="34"
+                                    MinWidth="20"
                                     VerticalAlignment="Stretch"
                                     Command="{x:Static search:SearchCommands.FindPrevious}">
                                 <ToolTip.Tip>
@@ -163,14 +163,14 @@
                                       Stretch="Uniform"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
-                                      Width="16"
-                                      Fill="{Binding $parent.Foreground}"
-                                      Stroke="{Binding $parent.Foreground}"
+                                      Width="12"
+                                      Fill="{DynamicResource ThemeForegroundBrush}"
+                                      Stroke="{DynamicResource ThemeForegroundBrush}"
                                       StrokeThickness="1" />
                             </Button>
                             <Button Margin="3,0,0,0"
                                     VerticalAlignment="Stretch"
-                                    MinWidth="34"
+                                    MinWidth="20"
                                     Command="{x:Static search:SearchCommands.FindNext}">
                                 <ToolTip.Tip>
                                     <TextBlock Text="{x:Static ae:SR.SearchFindNextText}" />
@@ -179,14 +179,14 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
                                       Stretch="Uniform"
-                                      Width="16"
-                                      Fill="{Binding $parent.Foreground}"
-                                      Stroke="{Binding $parent.Foreground}"
+                                      Width="12"
+                                      Fill="{DynamicResource ThemeForegroundBrush}"
+                                      Stroke="{DynamicResource ThemeForegroundBrush}"
                                       StrokeThickness="1" />
                             </Button>
                             <Button Margin="3,0,0,0"
                                     VerticalAlignment="Stretch"
-                                    MinWidth="34"
+                                    MinWidth="20"
                                     Command="{x:Static search:SearchCommands.CloseSearchPanel}"
                                     Focusable="True">
                                 <Path
@@ -195,8 +195,8 @@
                                     VerticalAlignment="Center"
                                     Stretch="Uniform"
                                     Width="12"
-                                    Fill="{Binding $parent.Foreground}"
-                                    Stroke="{Binding $parent.Foreground}"
+                                    Fill="{DynamicResource ThemeForegroundBrush}"
+                                    Stroke="{DynamicResource ThemeForegroundBrush}"
                                     StrokeThickness="1" />
                             </Button>
                         </StackPanel>
@@ -215,7 +215,7 @@
                                      Text="{Binding ReplacePattern, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Button Margin="5, 0, 0, 0"
                                     VerticalAlignment="Stretch"
-                                    MinWidth="34"
+                                    MinWidth="20"
                                     Command="{x:Static search:SearchCommands.ReplaceNext}">
                                 <ToolTip.Tip>
                                     <TextBlock Text="{x:Static ae:SR.SearchReplaceNext}" />
@@ -226,7 +226,7 @@
                                     VerticalAlignment="Center"
                                     Stretch="Uniform"
                                     Width="12"
-                                    Fill="{Binding $parent.Foreground}"
+                                    Fill="{DynamicResource ThemeForegroundBrush}"
                                     StrokeThickness="1" />
                             </Button>
                             <Button Margin="3, 0, 0, 0"
@@ -241,8 +241,8 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Stretch="Uniform"
-                                    Width="18"
-                                    Fill="{Binding $parent.Foreground}" />
+                                    Width="12"
+                                    Fill="{DynamicResource ThemeForegroundBrush}" />
                             </Button>
                         </StackPanel>
                         <StackPanel Name="PART_MessageView"
