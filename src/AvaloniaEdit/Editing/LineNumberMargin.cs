@@ -74,6 +74,7 @@ namespace AvaloniaEdit.Editing
 			if (textView is {VisualLinesValid: true}) {
 				var foreground = GetValue(TextBlock.ForegroundProperty);
 				foreach (var line in textView.VisualLines) {
+                    if(line.FirstDocumentLine.IsDeleted) continue;
 					var lineNumber = line.FirstDocumentLine.LineNumber;
 					var text = TextFormatterFactory.CreateFormattedText(
 						this,
