@@ -60,9 +60,9 @@ namespace AvaloniaEdit.Rendering
         {
             ClipToBoundsProperty.OverrideDefaultValue<TextView>(true);
             FocusableProperty.OverrideDefaultValue<TextView>(false);
-            OptionsProperty.Changed.Subscribe(OnOptionsChanged);
+            OptionsProperty.Changed.SubscribeOld(OnOptionsChanged);
 
-            DocumentProperty.Changed.Subscribe(OnDocumentChanged);
+            DocumentProperty.Changed.SubscribeOld(OnDocumentChanged);
         }
 
         private readonly ColumnRulerRenderer _columnRulerRenderer;

@@ -62,8 +62,8 @@ namespace AvaloniaEdit.Editing
             KeyboardNavigation.TabNavigationProperty.OverrideDefaultValue<TextArea>(KeyboardNavigationMode.None);
             FocusableProperty.OverrideDefaultValue<TextArea>(true);
 
-            DocumentProperty.Changed.Subscribe(OnDocumentChanged);
-            OptionsProperty.Changed.Subscribe(OnOptionsChanged);
+            DocumentProperty.Changed.SubscribeOld(OnDocumentChanged);
+            OptionsProperty.Changed.SubscribeOld(OnOptionsChanged);
 
             AffectsArrange<TextArea>(OffsetProperty);
             AffectsRender<TextArea>(OffsetProperty);

@@ -43,10 +43,10 @@ namespace AvaloniaEdit.Folding
 
         static FoldingMargin()
         {
-            FoldingMarkerBrushProperty.Changed.Subscribe(OnUpdateBrushes);
-            FoldingMarkerBackgroundBrushProperty.Changed.Subscribe(OnUpdateBrushes);
-            SelectedFoldingMarkerBrushProperty.Changed.Subscribe(OnUpdateBrushes);
-            SelectedFoldingMarkerBackgroundBrushProperty.Changed.Subscribe(OnUpdateBrushes);
+            FoldingMarkerBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
+            FoldingMarkerBackgroundBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
+            SelectedFoldingMarkerBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
+            SelectedFoldingMarkerBackgroundBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
         }
 
         #region Brushes

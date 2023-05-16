@@ -72,6 +72,8 @@ namespace AvaloniaEdit.CodeCompletion
 
             LogicalChildren.Add(_toolTip);
 
+            this.ApplyTemplate();
+            
             //_toolTip.Closed += (o, e) => ((Popup)o).Child = null;
             AttachEvents();
         }

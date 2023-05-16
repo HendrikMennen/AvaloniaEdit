@@ -303,7 +303,7 @@ namespace AvaloniaEdit.Utils
             return stack.IsEmpty ? default(T) : stack.Peek();
         }
 
-        public static IDisposable Subscribe<T>(this IObservable<T> observable, Action<T> action)
+        public static IDisposable SubscribeOld<T>(this IObservable<T> observable, Action<T> action)
         {
             return observable.Subscribe(new AnonymousObserver<T>(action));
         }
