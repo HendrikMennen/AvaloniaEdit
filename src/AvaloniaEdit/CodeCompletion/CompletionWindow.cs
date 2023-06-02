@@ -157,7 +157,7 @@ namespace AvaloniaEdit.CodeCompletion
         {
             if (!IsOpen) return;
             e.Handled = RaiseEventPair(this, null, TextInputEvent,
-                                   new TextInputEventArgs { Text = e.Text });
+                                       new TextInputEventArgs { Text = e.Text });
         }
 
         private void TextArea_MouseWheel(object sender, PointerWheelEventArgs e)
