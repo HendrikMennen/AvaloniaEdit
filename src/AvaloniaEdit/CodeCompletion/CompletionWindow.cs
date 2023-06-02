@@ -19,15 +19,9 @@
 using System;
 using Avalonia;
 using AvaloniaEdit.Document;
-using AvaloniaEdit.Editing;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Media;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Threading;
 
 namespace AvaloniaEdit.CodeCompletion
 {

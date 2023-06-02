@@ -20,7 +20,6 @@ using System;
 using Avalonia.Media;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
-using Avalonia.Media.Imaging;
 
 namespace AvaloniaEdit.CodeCompletion
 {
