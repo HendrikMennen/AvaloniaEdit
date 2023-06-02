@@ -227,7 +227,7 @@ namespace AvaloniaEdit.CodeCompletion
                 if (e.Key == Key.DeadCharProcessed)
                     return;
                 e.Handled = RaiseEventPair(Window, null, KeyDownEvent,
-                                           new KeyEventArgs { Device = e.Device, Key = e.Key });
+                                           new KeyEventArgs { Key = e.Key });
             }
 
             public override void OnPreviewKeyUp(KeyEventArgs e)
@@ -235,7 +235,7 @@ namespace AvaloniaEdit.CodeCompletion
                 if (e.Key == Key.DeadCharProcessed)
                     return;
                 e.Handled = RaiseEventPair(Window, null, KeyUpEvent,
-                    new KeyEventArgs { Device = e.Device, Key = e.Key });
+                    new KeyEventArgs { Key = e.Key });
             }
         }
         #endregion
