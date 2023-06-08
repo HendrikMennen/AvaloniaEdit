@@ -115,7 +115,7 @@ namespace AvaloniaEdit.CodeCompletion
             // If the Complete callback pushes stacked input handlers, we don't want to pop those when the CC window closes.
             var item = CompletionList.SelectedItem;
             item?.Complete(TextArea, new AnchorSegment(TextArea.Document, StartOffset, EndOffset - StartOffset), e);
-            CompletionList.CompletionData.Clear();
+            Collapse();
         }
 
         private void AttachEvents()
@@ -205,7 +205,7 @@ namespace AvaloniaEdit.CodeCompletion
                     CompletionList.SelectItem(string.Empty);
 
                     if (CompletionList.ListBox.ItemCount == 0) Collapse();
-                    else Show();
+                    //else Show();
                 }
                 return;
             }
@@ -224,7 +224,7 @@ namespace AvaloniaEdit.CodeCompletion
                     CompletionList.SelectItem(document.GetText(StartOffset, offset - StartOffset));
                     
                     if (CompletionList.ListBox.ItemCount == 0) Collapse();
-                    else Show();
+                    //else Show();
                 }
             }
         }
@@ -246,6 +246,7 @@ namespace AvaloniaEdit.CodeCompletion
             if (!IsOpen) return;
             
             CompletionList.CompletionData.Clear();
+            CompletionList.ListBox.ItemsSource = null;
             Hide();
         }
     }
