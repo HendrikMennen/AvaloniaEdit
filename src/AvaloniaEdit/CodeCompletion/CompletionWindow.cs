@@ -61,7 +61,7 @@ namespace AvaloniaEdit.CodeCompletion
                 PlacementTarget = this,
                 Placement = PlacementMode.RightEdgeAlignedTop,
                 Child = _toolTipContent,
-                Offset = new PixelPoint(18, 0),
+                Offset = new Point(18, 0),
             };
 
             LogicalChildren.Add(_toolTip);
