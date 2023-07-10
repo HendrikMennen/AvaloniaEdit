@@ -111,7 +111,7 @@ namespace AvaloniaEdit.TextMate
                     transformer = new TextMateColoringTransformer(
                         _editor.TextArea.TextView, _exceptionHandler);
 
-                    _editor.TextArea.TextView.LineTransformers.Add(transformer);
+                    _editor.TextArea.TextView.LineTransformers.Insert(0, transformer);
                 }
 
                 return transformer;
