@@ -24,7 +24,6 @@ using Avalonia.Input;
 using Avalonia.Input.TextInput;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Indentation;
