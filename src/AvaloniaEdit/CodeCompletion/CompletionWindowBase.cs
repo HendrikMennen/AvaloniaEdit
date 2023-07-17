@@ -85,9 +85,7 @@ namespace AvaloniaEdit.CodeCompletion
             TextEditor = textEditor;
             TextArea = textEditor.TextArea ?? throw new ArgumentNullException(nameof(TextArea));
             _parentWindow = TextArea.GetVisualRoot() as Window;
-
-            PlacementGravity = PopupGravity.BottomRight;
-            PlacementAnchor = PopupAnchor.TopLeft;
+            
 
             AddHandler(PointerReleasedEvent, OnMouseUp, handledEventsToo: true);
 

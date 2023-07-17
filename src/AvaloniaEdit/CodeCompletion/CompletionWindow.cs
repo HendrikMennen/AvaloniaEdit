@@ -91,6 +91,10 @@ namespace AvaloniaEdit.CodeCompletion
                 if (selectedContainer != null)
                 {
                     _toolTip.PlacementTarget = selectedContainer;
+                    if (selectedContainer.Bounds.X < _toolTip.Bounds.X)
+                    {
+                        Console.WriteLine(selectedContainer);
+                    }
                     _toolTip.IsOpen = true;
                 }
             }
