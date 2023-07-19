@@ -1901,6 +1901,8 @@ namespace AvaloniaEdit.Rendering
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
+            
+            if (!this.IsAttachedToVisualTree()) return;
 
             if (change.Property == TemplatedControl.ForegroundProperty
                      || change.Property == NonPrintableCharacterBrushProperty
