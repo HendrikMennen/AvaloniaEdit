@@ -209,7 +209,7 @@ namespace AvaloniaEdit.Demo
             if (e.Text == ".")
             {
 
-                _completionWindow = new CompletionWindow(_textEditor.TextArea);
+                _completionWindow = new CompletionWindow(_textEditor);
                 _completionWindow.Closed += (o, args) => _completionWindow = null;
 
                 var data = _completionWindow.CompletionList.CompletionData;
@@ -232,7 +232,7 @@ namespace AvaloniaEdit.Demo
             }
             else if (e.Text == "(")
             {
-                _insightWindow = new OverloadInsightWindow(_textEditor.TextArea);
+                _insightWindow = new OverloadInsightWindow(_textEditor);
                 _insightWindow.Closed += (o, args) => _insightWindow = null;
 
                 _insightWindow.Provider = new MyOverloadProvider(new[]

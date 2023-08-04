@@ -37,7 +37,7 @@ namespace AvaloniaEdit.Editing
     {
         public AbstractMargin()
         {
-            this.GetPropertyChangedObservable(TextViewProperty).Subscribe(o =>
+            this.GetPropertyChangedObservable(TextViewProperty).SubscribeOld(o =>
             {
                 _wasAutoAddedToTextView = false;
                 OnTextViewChanged(o.OldValue as TextView, o.NewValue as TextView);

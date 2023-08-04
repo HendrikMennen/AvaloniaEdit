@@ -16,7 +16,6 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
@@ -43,10 +42,10 @@ namespace AvaloniaEdit.Folding
 
         static FoldingMargin()
         {
-            FoldingMarkerBrushProperty.Changed.Subscribe(OnUpdateBrushes);
-            FoldingMarkerBackgroundBrushProperty.Changed.Subscribe(OnUpdateBrushes);
-            SelectedFoldingMarkerBrushProperty.Changed.Subscribe(OnUpdateBrushes);
-            SelectedFoldingMarkerBackgroundBrushProperty.Changed.Subscribe(OnUpdateBrushes);
+            FoldingMarkerBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
+            FoldingMarkerBackgroundBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
+            SelectedFoldingMarkerBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
+            SelectedFoldingMarkerBackgroundBrushProperty.Changed.SubscribeOld(OnUpdateBrushes);
         }
 
         #region Brushes

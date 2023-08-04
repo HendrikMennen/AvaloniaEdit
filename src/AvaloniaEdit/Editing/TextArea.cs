@@ -24,9 +24,7 @@ using Avalonia.Input;
 using Avalonia.Input.TextInput;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
-using Avalonia.VisualTree;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Indentation;
 using AvaloniaEdit.Rendering;
@@ -62,8 +60,8 @@ namespace AvaloniaEdit.Editing
             KeyboardNavigation.TabNavigationProperty.OverrideDefaultValue<TextArea>(KeyboardNavigationMode.None);
             FocusableProperty.OverrideDefaultValue<TextArea>(true);
 
-            DocumentProperty.Changed.Subscribe(OnDocumentChanged);
-            OptionsProperty.Changed.Subscribe(OnOptionsChanged);
+            DocumentProperty.Changed.SubscribeOld(OnDocumentChanged);
+            OptionsProperty.Changed.SubscribeOld(OnOptionsChanged);
 
             AffectsArrange<TextArea>(OffsetProperty);
             AffectsRender<TextArea>(OffsetProperty);
@@ -540,7 +538,7 @@ namespace AvaloniaEdit.Editing
         /// The <see cref="SelectionCornerRadius"/> property.
         /// </summary>
         public static readonly StyledProperty<double> SelectionCornerRadiusProperty =
-            AvaloniaProperty.Register<TextArea, double>("SelectionCornerRadius", 3.0);
+            AvaloniaProperty.Register<TextArea, double>("SelectionCornerRadius");
 
         /// <summary>
         /// Gets/Sets the corner radius of the selection.

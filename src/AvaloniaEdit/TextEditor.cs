@@ -52,16 +52,16 @@ namespace AvaloniaEdit
             HorizontalScrollBarVisibilityProperty.OverrideDefaultValue<TextEditor>(ScrollBarVisibility.Auto);
             VerticalScrollBarVisibilityProperty.OverrideDefaultValue<TextEditor>(ScrollBarVisibility.Auto);
 
-            OptionsProperty.Changed.Subscribe(OnOptionsChanged);
-            DocumentProperty.Changed.Subscribe(OnDocumentChanged);
-            SyntaxHighlightingProperty.Changed.Subscribe(OnSyntaxHighlightingChanged);
-            IsReadOnlyProperty.Changed.Subscribe(OnIsReadOnlyChanged);
-            IsModifiedProperty.Changed.Subscribe(OnIsModifiedChanged);
-            ShowLineNumbersProperty.Changed.Subscribe(OnShowLineNumbersChanged);
-            LineNumbersForegroundProperty.Changed.Subscribe(OnLineNumbersForegroundChanged);
-            FontFamilyProperty.Changed.Subscribe(OnFontFamilyPropertyChanged);
-            FontSizeProperty.Changed.Subscribe(OnFontSizePropertyChanged);
-            SearchResultsBrushProperty.Changed.Subscribe(SearchResultsBrushChangedCallback);
+            OptionsProperty.Changed.SubscribeOld(OnOptionsChanged);
+            DocumentProperty.Changed.SubscribeOld(OnDocumentChanged);
+            SyntaxHighlightingProperty.Changed.SubscribeOld(OnSyntaxHighlightingChanged);
+            IsReadOnlyProperty.Changed.SubscribeOld(OnIsReadOnlyChanged);
+            IsModifiedProperty.Changed.SubscribeOld(OnIsModifiedChanged);
+            ShowLineNumbersProperty.Changed.SubscribeOld(OnShowLineNumbersChanged);
+            LineNumbersForegroundProperty.Changed.SubscribeOld(OnLineNumbersForegroundChanged);
+            FontFamilyProperty.Changed.SubscribeOld(OnFontFamilyPropertyChanged);
+            FontSizeProperty.Changed.SubscribeOld(OnFontSizePropertyChanged);
+            SearchResultsBrushProperty.Changed.SubscribeOld(SearchResultsBrushChangedCallback);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace AvaloniaEdit
         /// Gets the scroll viewer used by the text editor.
         /// This property can return null if the template has not been applied / does not contain a scroll viewer.
         /// </summary>
-        internal ScrollViewer ScrollViewer { get; private set; }
+        public ScrollViewer ScrollViewer { get; private set; }
 
         #endregion
 

@@ -19,11 +19,9 @@
 using System;
 using Avalonia;
 using AvaloniaEdit.Document;
-using AvaloniaEdit.Editing;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Media;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -43,7 +41,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// <summary>
         /// Creates a new code completion window.
         /// </summary>
-        public CompletionWindow(TextArea textArea) : base(textArea)
+        public CompletionWindow(TextEditor editor) : base(editor)
         {
             CompletionList = new CompletionList();
             // keep height automatic
@@ -53,81 +51,52 @@ namespace AvaloniaEdit.CodeCompletion
             Child = CompletionList;
             // prevent user from resizing window to 0x0
             MinHeight = 15;
-            MinWidth = 30;
+            MinWidth = 30;          
 
             _toolTipContent = new ContentControl();
             _toolTipContent.Classes.Add("ToolTip");
-
             _toolTip = new PopupWithCustomPosition
             {
                 IsLightDismissEnabled = true,
                 PlacementTarget = this,
                 Placement = PlacementMode.RightEdgeAlignedTop,
                 Child = _toolTipContent,
+                Offset = new Point(18, 0),
             };
 
             LogicalChildren.Add(_toolTip);
 
+            this.ApplyTemplate();
+            
             //_toolTip.Closed += (o, e) => ((Popup)o).Child = null;
-
             AttachEvents();
-        }
-
-        protected override void OnClosed()
-        {
-            base.OnClosed();
-
-            if (_toolTip != null)
-            {
-                _toolTip.IsOpen = false;
-                _toolTip = null;
-                _toolTipContent = null;
-            }
         }
 
         #region ToolTip handling
 
-        private void CompletionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UpdateTooltip(object sender, EventArgs e)
         {
+            
             if (_toolTipContent == null) return;
 
             var item = CompletionList.SelectedItem;
             var description = item?.Description;
+            
             if (description != null)
             {
-                if (description is string descriptionText)
-                {
-                    _toolTipContent.Content = new TextBlock
-                    {
-                        Text = descriptionText,
-                        TextWrapping = TextWrapping.Wrap
-                    };
-                }
-                else
-                {
-                    _toolTipContent.Content = description;
-                }
+                _toolTipContent.Content = description;
 
-                _toolTip.IsOpen = false; //Popup needs to be closed to change position
+                var selectedContainer = CompletionList.ListBox.ContainerFromIndex(CompletionList.ListBox.SelectedIndex);
 
-                // Calculate offset for tooltip
-                var popupRoot = Host as PopupRoot;
-                if (CompletionList.CurrentList != null)
+                if (selectedContainer != null)
                 {
-                    double yOffset = 0;
-                    var itemContainer = CompletionList.ListBox.ContainerFromItem(item);
-                    if (popupRoot != null && itemContainer != null)
+                    _toolTip.PlacementTarget = selectedContainer;
+                    if (selectedContainer.Bounds.X < _toolTip.Bounds.X)
                     {
-                        var position = itemContainer.TranslatePoint(new Point(0, 0), popupRoot);
-                        if (position.HasValue)
-                            yOffset = position.Value.Y;
+                        Console.WriteLine(selectedContainer);
                     }
-
-                    _toolTip.Offset = new Point(2, yOffset);
+                    _toolTip.IsOpen = true;
                 }
-
-                _toolTip.PlacementTarget = popupRoot;
-                _toolTip.IsOpen = true;
             }
             else
             {
@@ -135,7 +104,13 @@ namespace AvaloniaEdit.CodeCompletion
             }
         }
 
+
         #endregion
+
+        private void CompletionList_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == TemplatedControl.FontSizeProperty) SetPosition();
+        }
 
         private void CompletionList_InsertionRequested(object sender, EventArgs e)
         {
@@ -144,31 +119,37 @@ namespace AvaloniaEdit.CodeCompletion
             // If the Complete callback pushes stacked input handlers, we don't want to pop those when the CC window closes.
             var item = CompletionList.SelectedItem;
             item?.Complete(TextArea, new AnchorSegment(TextArea.Document, StartOffset, EndOffset - StartOffset), e);
+            Collapse();
         }
 
         private void AttachEvents()
         {
             CompletionList.InsertionRequested += CompletionList_InsertionRequested;
-            CompletionList.SelectionChanged += CompletionList_SelectionChanged;
+            CompletionList.ListBox.PropertyChanged += CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged += CaretPositionChanged;
             TextArea.PointerWheelChanged += TextArea_MouseWheel;
             TextArea.TextInput += TextArea_PreviewTextInput;
+            Opened += UpdateTooltip;
+            CompletionList.ListBox.SelectionChanged += UpdateTooltip;
         }
 
         /// <inheritdoc/>
         protected override void DetachEvents()
         {
             CompletionList.InsertionRequested -= CompletionList_InsertionRequested;
-            CompletionList.SelectionChanged -= CompletionList_SelectionChanged;
+            CompletionList.ListBox.PropertyChanged -= CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged -= CaretPositionChanged;
             TextArea.PointerWheelChanged -= TextArea_MouseWheel;
             TextArea.TextInput -= TextArea_PreviewTextInput;
+            Opened -= UpdateTooltip;
+            CompletionList.ListBox.SelectionChanged -= UpdateTooltip;
             base.DetachEvents();
         }
 
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (!IsOpen) return;
             base.OnKeyDown(e);
             if (!e.Handled)
             {
@@ -178,12 +159,14 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void TextArea_PreviewTextInput(object sender, TextInputEventArgs e)
         {
+            if (!IsOpen) return;
             e.Handled = RaiseEventPair(this, null, TextInputEvent,
                                        new TextInputEventArgs { Text = e.Text });
         }
 
         private void TextArea_MouseWheel(object sender, PointerWheelEventArgs e)
         {
+            if (!IsOpen) return;
             e.Handled = RaiseEventPair(GetScrollEventTarget(),
                                        null, PointerWheelChangedEvent, e);
         }
@@ -219,14 +202,14 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 if (CloseAutomatically && CloseWhenCaretAtBeginning)
                 {
-                    Hide();
+                    Collapse();
                 }
                 else
                 {
                     CompletionList.SelectItem(string.Empty);
 
-                    if (CompletionList.ListBox.ItemCount == 0) IsVisible = false;
-                    else IsVisible = true;
+                    if (CompletionList.ListBox.ItemCount == 0) Collapse();
+                    //else Show();
                 }
                 return;
             }
@@ -234,7 +217,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 if (CloseAutomatically)
                 {
-                    Hide();
+                    Collapse();
                 }
             }
             else
@@ -243,11 +226,32 @@ namespace AvaloniaEdit.CodeCompletion
                 if (document != null)
                 {
                     CompletionList.SelectItem(document.GetText(StartOffset, offset - StartOffset));
-
-                    if (CompletionList.ListBox.ItemCount == 0) IsVisible = false;
-                    else IsVisible = true;
+                    
+                    if (CompletionList.ListBox.ItemCount == 0) Collapse();
+                    //else Show();
                 }
             }
+        }
+
+        public void Show(string e)
+        {
+            if(!string.IsNullOrEmpty(e)) CompletionList.SelectItem(e);
+            if(CompletionList.ListBox.ItemCount > 0) Show();
+        }
+
+        protected override void OnHide()
+        {
+            base.OnHide();
+            _toolTip.IsOpen = false;
+        }
+
+        public void Collapse()
+        {
+            if (!IsOpen) return;
+            
+            CompletionList.CompletionData.Clear();
+            CompletionList.ListBox.ItemsSource = null;
+            Hide();
         }
     }
 }

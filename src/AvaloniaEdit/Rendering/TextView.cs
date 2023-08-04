@@ -60,9 +60,9 @@ namespace AvaloniaEdit.Rendering
         {
             ClipToBoundsProperty.OverrideDefaultValue<TextView>(true);
             FocusableProperty.OverrideDefaultValue<TextView>(false);
-            OptionsProperty.Changed.Subscribe(OnOptionsChanged);
+            OptionsProperty.Changed.SubscribeOld(OnOptionsChanged);
 
-            DocumentProperty.Changed.Subscribe(OnDocumentChanged);
+            DocumentProperty.Changed.SubscribeOld(OnDocumentChanged);
         }
 
         private readonly ColumnRulerRenderer _columnRulerRenderer;
@@ -1901,6 +1901,8 @@ namespace AvaloniaEdit.Rendering
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
+            
+            if (!this.IsAttachedToVisualTree()) return;
 
             if (change.Property == TemplatedControl.ForegroundProperty
                      || change.Property == NonPrintableCharacterBrushProperty

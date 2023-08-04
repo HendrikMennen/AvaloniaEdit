@@ -116,6 +116,9 @@ namespace AvaloniaEdit.TextMate
 
         protected override void TransformLine(DocumentLine line, ITextRunConstructionContext context)
         {
+            //Temporary performance fix
+            if (line.Length > 300) return;
+            
             try
             {
                 if (_model == null)

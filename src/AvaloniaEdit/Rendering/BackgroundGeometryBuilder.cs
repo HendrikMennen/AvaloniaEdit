@@ -150,7 +150,9 @@ namespace AvaloniaEdit.Rendering
 				end = new TextViewPosition(textView.Document.GetLocation(segmentEnd));
 			}
 
-			foreach (VisualLine vl in textView.VisualLines) {
+			foreach (VisualLine vl in textView.VisualLines)
+			{
+				if (vl.IsDisposed) continue;
 				int vlStartOffset = vl.FirstDocumentLine.Offset;
 				if (vlStartOffset > segmentEnd)
 					break;

@@ -17,7 +17,10 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
@@ -30,7 +33,7 @@ namespace AvaloniaEdit.Editing
     /// <summary>
     /// Helper class with caret-related methods.
     /// </summary>
-    public sealed class Caret
+    public sealed class Caret : INotifyPropertyChanged
     {
         private const double CaretWidth = 0.5;
 
@@ -279,6 +282,9 @@ namespace AvaloniaEdit.Editing
             else
             {
                 PositionChanged?.Invoke(this, EventArgs.Empty);
+                                
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Line)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Column)));
             }
         }
 
@@ -552,6 +558,21 @@ namespace AvaloniaEdit.Editing
         {
             get => _caretAdorner.CaretBrush;
             set => _caretAdorner.CaretBrush = value;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
         }
     }
 }
