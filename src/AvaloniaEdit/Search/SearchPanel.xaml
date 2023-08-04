@@ -47,9 +47,9 @@
 
   <ControlTheme x:Key="SearchPanelTextBoxButton" TargetType="ToggleButton"
                 BasedOn="{StaticResource {x:Type ToggleButton}}">
-    <Setter Property="Padding" Value="4"></Setter>
-    <Setter Property="MinWidth" Value="22"></Setter>
-    <Setter Property="MinHeight" Value="20"></Setter>
+    <Setter Property="Padding" Value="4" />
+    <Setter Property="MinWidth" Value="22" />
+    <Setter Property="MinHeight" Value="20" />
   </ControlTheme>
 
   <ControlTheme x:Key="{x:Type search:SearchPanel}" TargetType="search:SearchPanel">
