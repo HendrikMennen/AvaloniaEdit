@@ -61,7 +61,7 @@ namespace AvaloniaEdit.CodeCompletion
                 PlacementTarget = this,
                 Placement = PlacementMode.RightEdgeAlignedTop,
                 Child = _toolTipContent,
-                Offset = new Point(18, 0),
+                Offset = new Point(1, 0),
             };
 
             LogicalChildren.Add(_toolTip);
@@ -91,10 +91,6 @@ namespace AvaloniaEdit.CodeCompletion
                 if (selectedContainer != null)
                 {
                     _toolTip.PlacementTarget = selectedContainer;
-                    if (selectedContainer.Bounds.X < _toolTip.Bounds.X)
-                    {
-                        Console.WriteLine(selectedContainer);
-                    }
                     _toolTip.IsOpen = true;
                 }
             }
