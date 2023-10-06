@@ -40,11 +40,6 @@ namespace AvaloniaEdit.CodeCompletion
     /// </summary>
     public class CompletionWindowBase : Popup
     {
-        static CompletionWindowBase()
-        {
-            //BackgroundProperty.OverrideDefaultValue(typeof(CompletionWindowBase), Brushes.White);           
-        }
-
         protected override Type StyleKeyOverride => typeof(PopupRoot);
 
         /// <summary>
