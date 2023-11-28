@@ -108,8 +108,8 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="12"
-                            Fill="{TemplateBinding Foreground}"
-                            Stroke="{TemplateBinding Foreground}"
+                            Fill="{Binding #PART_searchTextBox.Foreground}"
+                            Stroke="{Binding #PART_searchTextBox.Foreground}"
                             StrokeThickness="1" />
                     </ToggleButton>
                     <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
@@ -122,8 +122,8 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="14"
-                            Fill="{TemplateBinding Foreground}"
-                            Stroke="{TemplateBinding Foreground}"
+                            Fill="{Binding #PART_searchTextBox.Foreground}"
+                            Stroke="{Binding #PART_searchTextBox.Foreground}"
                             StrokeThickness="1" />
                     </ToggleButton>
                     <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
@@ -136,8 +136,8 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Width="12"
-                            Fill="{TemplateBinding Foreground}"
-                            Stroke="{TemplateBinding Foreground}"
+                            Fill="{Binding #PART_searchTextBox.Foreground}"
+                            Stroke="{Binding #PART_searchTextBox.Foreground}"
                             StrokeThickness="1" />
                     </ToggleButton>
                   </StackPanel>
