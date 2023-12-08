@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-    <VersionPrefix>11.0.6.0</VersionPrefix>
     <WarningsNotAsErrors>0612,0618</WarningsNotAsErrors>
     <PackageId>OneWare.AvaloniaEdit</PackageId>
     <Description>This project is a port of AvalonEdit, a WPF-based text editor for Avalonia.</Description>
