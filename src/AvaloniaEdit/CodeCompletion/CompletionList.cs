@@ -455,7 +455,9 @@ namespace AvaloniaEdit.CodeCompletion
         
         public void Reset()
         {
+            _currentList.Clear();
             CompletionData.Clear();
+            _listBox.ItemsSource = null;
             _currentText = null;
         }
     }
