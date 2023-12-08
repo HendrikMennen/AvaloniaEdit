@@ -232,7 +232,7 @@ namespace AvaloniaEdit.Demo
                 data.Add(new MyCompletionData("Item8"));
                 data.Add(new MyCompletionData("Item9"));
                 data.Add(new MyCompletionData("Item10"));
-                data.Add(new MyCompletionData("Item11"));
+                data.Add(new MyCompletionData("Item11ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
                 data.Add(new MyCompletionData("Item12"));
                 data.Add(new MyCompletionData("Item13"));
 
