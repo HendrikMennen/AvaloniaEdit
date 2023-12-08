@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <VersionPrefix>11.0.6.0</VersionPrefix>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+    <PackageDescription>TextMate integration for AvaloniaEdit.</PackageDescription>
     <PackageId>OneWare.AvaloniaEdit.TextMate</PackageId>
     <Description>TextMate integration for AvaloniaEdit.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

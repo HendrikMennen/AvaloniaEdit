@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <VersionPrefix>11.0.6.0</VersionPrefix>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <WarningsNotAsErrors>0612,0618</WarningsNotAsErrors>
     <PackageId>OneWare.AvaloniaEdit</PackageId>
     <Description>This project is a port of AvalonEdit, a WPF-based text editor for Avalonia.</Description>
@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.6.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
 
   <ItemGroup>
