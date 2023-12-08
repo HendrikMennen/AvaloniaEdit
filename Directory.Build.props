@@ -2,7 +2,7 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AvaloniaVersion>11.0.5</AvaloniaVersion>
+    <AvaloniaVersion>11.0.6</AvaloniaVersion>
     <TextMateSharpVersion>1.0.56</TextMateSharpVersion>
     <VersionSuffix>beta</VersionSuffix>
   </PropertyGroup>

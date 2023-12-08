@@ -65,8 +65,6 @@ namespace AvaloniaEdit.CodeCompletion
             };
 
             LogicalChildren.Add(_toolTip);
-
-            this.ApplyTemplate();
             
             //_toolTip.Closed += (o, e) => ((Popup)o).Child = null;
             AttachEvents();
@@ -120,6 +118,8 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void AttachEvents()
         {
+            this.ApplyTemplate();
+
             CompletionList.InsertionRequested += CompletionList_InsertionRequested;
             CompletionList.ListBox.PropertyChanged += CompletionList_PropertyChanged;
             TextArea.Caret.PositionChanged += CaretPositionChanged;
@@ -193,6 +193,8 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void CaretPositionChanged(object sender, EventArgs e)
         {
+            if (!IsOpen) return;
+            
             var offset = TextArea.Caret.Offset;
             if (offset == StartOffset)
             {
