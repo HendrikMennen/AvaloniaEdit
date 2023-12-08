@@ -206,11 +206,20 @@ namespace AvaloniaEdit.Demo
 
         private void textEditor_TextArea_TextEntered(object sender, TextInputEventArgs e)
         {
+            if (e.Text == "M")
+            {
+                _completionWindow = new CompletionWindow(_textEditor)
+                {
+                    StartOffset = _textEditor.CaretOffset - 1,
+                };
+                var data = _completionWindow.CompletionList.CompletionData;
+                data.Add(new MyCompletionData("Main"));
+
+                _completionWindow.Show();
+            }
             if (e.Text == ".")
             {
-
                 _completionWindow = new CompletionWindow(_textEditor);
-                _completionWindow.Closed += (o, args) => _completionWindow = null;
 
                 var data = _completionWindow.CompletionList.CompletionData;
                 data.Add(new MyCompletionData("Item1"));

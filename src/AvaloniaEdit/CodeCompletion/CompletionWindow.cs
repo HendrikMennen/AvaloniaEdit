@@ -21,6 +21,7 @@ using Avalonia;
 using AvaloniaEdit.Document;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Input;
 
 namespace AvaloniaEdit.CodeCompletion
@@ -60,6 +61,7 @@ namespace AvaloniaEdit.CodeCompletion
                 IsLightDismissEnabled = true,
                 PlacementTarget = this,
                 Placement = PlacementMode.RightEdgeAlignedTop,
+                PlacementConstraintAdjustment = PopupPositionerConstraintAdjustment.None,
                 Child = _toolTipContent,
                 Offset = new Point(18, 0),
             };
@@ -67,7 +69,20 @@ namespace AvaloniaEdit.CodeCompletion
             LogicalChildren.Add(_toolTip);
             
             //_toolTip.Closed += (o, e) => ((Popup)o).Child = null;
+            
             AttachEvents();
+        }
+        
+        protected override void OnClosed()
+        {
+            base.OnClosed();
+
+            if (_toolTip != null)
+            {
+                _toolTip.IsOpen = false;
+                _toolTip = null;
+                _toolTipContent = null;
+            }
         }
 
         #region ToolTip handling
@@ -103,7 +118,7 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void CompletionList_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == TemplatedControl.FontSizeProperty) SetPosition();
+            if (e.Property == TemplatedControl.FontSizeProperty) UpdatePosition();
         }
 
         private void CompletionList_InsertionRequested(object sender, EventArgs e)
@@ -113,7 +128,6 @@ namespace AvaloniaEdit.CodeCompletion
             // If the Complete callback pushes stacked input handlers, we don't want to pop those when the CC window closes.
             var item = CompletionList.SelectedItem;
             item?.Complete(TextArea, new AnchorSegment(TextArea.Document, StartOffset, EndOffset - StartOffset), e);
-            Collapse();
         }
 
         private void AttachEvents()
@@ -193,21 +207,19 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void CaretPositionChanged(object sender, EventArgs e)
         {
-            if (!IsOpen) return;
-            
             var offset = TextArea.Caret.Offset;
             if (offset == StartOffset)
             {
                 if (CloseAutomatically && CloseWhenCaretAtBeginning)
                 {
-                    Collapse();
+                    Hide();
                 }
                 else
                 {
                     CompletionList.SelectItem(string.Empty);
 
-                    if (CompletionList.ListBox.ItemCount == 0) Collapse();
-                    //else Show();
+                    if (CompletionList.ListBox.ItemCount == 0) IsVisible = false;
+                    else IsVisible = true;
                 }
                 return;
             }
@@ -215,7 +227,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 if (CloseAutomatically)
                 {
-                    Collapse();
+                    Hide();
                 }
             }
             else
@@ -224,32 +236,11 @@ namespace AvaloniaEdit.CodeCompletion
                 if (document != null)
                 {
                     CompletionList.SelectItem(document.GetText(StartOffset, offset - StartOffset));
-                    
-                    if (CompletionList.ListBox.ItemCount == 0) Collapse();
-                    //else Show();
+
+                    if (CompletionList.ListBox.ItemCount == 0) IsVisible = false;
+                    else IsVisible = true;
                 }
             }
-        }
-
-        public void Show(string e)
-        {
-            if(!string.IsNullOrEmpty(e)) CompletionList.SelectItem(e);
-            if(CompletionList.ListBox.ItemCount > 0) Show();
-        }
-
-        protected override void OnHide()
-        {
-            base.OnHide();
-            _toolTip.IsOpen = false;
-        }
-
-        public void Collapse()
-        {
-            if (!IsOpen) return;
-            
-            CompletionList.CompletionData.Clear();
-            CompletionList.ListBox.ItemsSource = null;
-            Hide();
         }
     }
 }

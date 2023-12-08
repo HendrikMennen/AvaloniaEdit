@@ -93,14 +93,21 @@ namespace AvaloniaEdit.CodeCompletion
 
             //Deactivated += OnDeactivated; //Not needed?
 
-            //Closed += (sender, args) => DetachEvents();
+            Closed += (sender, args) => DetachEvents();
 
             AttachEvents();
         }
         
-
-        protected void SetPosition()
+        protected virtual void OnClosed()
         {
+            DetachEvents();
+        }
+
+        public void Show()
+        {
+            Height = double.NaN;
+            MinHeight = 0;
+            
             if (_document != null && StartOffset != TextArea.Caret.Offset)
             {
                 SetPosition(new TextViewPosition(_document.GetLocation(StartOffset)));
@@ -109,14 +116,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 SetPosition(TextArea.Caret.Position);
             }
-        }
-        
-        public virtual void Show()
-        {
-            Height = double.NaN;
-            MinHeight = 0;
-
-            SetPosition();
+            
             UpdatePosition();
             Open();
         }
@@ -124,12 +124,7 @@ namespace AvaloniaEdit.CodeCompletion
         public void Hide()
         {
             Close();
-            OnHide();
-        }
-
-        protected virtual void OnHide()
-        {
-            
+            OnClosed();
         }
 
         #region Event Handlers
@@ -146,7 +141,7 @@ namespace AvaloniaEdit.CodeCompletion
 
             // LostKeyboardFocus seems to be more reliable than PreviewLostKeyboardFocus - see SD-1729
             TextArea.LostFocus += TextAreaLostFocus;
-            TextArea.TextView.ScrollOffsetChanged += TextViewScrollOffsetChanged;          
+            TextArea.TextView.ScrollOffsetChanged += TextViewScrollOffsetChanged;
             TextArea.DocumentChanged += TextAreaDocumentChanged;
             if (_parentWindow != null)
             {
@@ -170,7 +165,7 @@ namespace AvaloniaEdit.CodeCompletion
         /// </summary>
         protected virtual void DetachEvents()
         {
-            //((ISetLogicalParent)this).SetParent(null);
+            ((ISetLogicalParent)this).SetParent(null);
 
             if (_document != null)
             {
@@ -411,9 +406,7 @@ namespace AvaloniaEdit.CodeCompletion
             {
                 Hide(); // removal immediately in front of completion segment: close the window
                         // this is necessary when pressing backspace after dot-completion
-                return;
-            }
-            if (e.Offset == StartOffset && e.RemovalLength == 0 && ExpectInsertionBeforeStart)
+            } if (e.Offset == StartOffset && e.RemovalLength == 0 && ExpectInsertionBeforeStart)
             {
                 StartOffset = e.GetNewOffset(StartOffset, AnchorMovementType.AfterInsertion);
                 ExpectInsertionBeforeStart = false;
