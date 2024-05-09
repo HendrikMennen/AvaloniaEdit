@@ -11,7 +11,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
-    <Version>11.0.10.0</Version>
+    <Version>11.0.10.1</Version>
     <RepositoryUrl>https://github.com/HendrikMennen/AvaloniaEdit/</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon.png</PackageIcon>

@@ -23,6 +23,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Input;
+using Avalonia.Threading;
 
 namespace AvaloniaEdit.CodeCompletion
 {
@@ -86,50 +87,53 @@ namespace AvaloniaEdit.CodeCompletion
 
         private void UpdateTooltip(object sender, EventArgs e)
         {
-            
             if (_toolTipContent == null) return;
 
-            var item = CompletionList.SelectedItem;
-            var description = item?.Description;
-            
-    
-            if (description != null && Host is Control placementTarget && CompletionList.CurrentList != null)
+            Dispatcher.UIThread.Post(() =>
             {
-                _toolTipContent.Content = description;
+                if(!IsOpen) return;
+                
+                var item = CompletionList.SelectedItem;
+                var description = item?.Description;
+                
+                if (description != null && Host is Control placementTarget && CompletionList.CurrentList != null)
+                {
+                    _toolTipContent.Content = description;
 
-                double yOffset = 0;
-                var selectedIndex = CompletionList.ListBox.SelectedIndex;
+                    double yOffset = 0;
+                    var selectedIndex = CompletionList.ListBox.SelectedIndex;
                     
-                var itemContainer = CompletionList.ListBox.ContainerFromIndex(selectedIndex);
+                    var itemContainer = CompletionList.ListBox.ContainerFromIndex(selectedIndex);
                     
-                if (itemContainer != null)
-                {
-                    _toolTip.Placement = PlacementMode.RightEdgeAlignedTop;
-                    var position = itemContainer.TranslatePoint(new Point(0, 0), placementTarget);
-                    if (position.HasValue) yOffset = position.Value.Y;
-                }
-                else 
-                {
-                    //When scrolling down the container is not always ready
-                    //If that happens we align the tooltip at the bottom or top
-                    if (CompletionList.ListBox.FirstVisibleItem < selectedIndex)
-                    {
-                        _toolTip.Placement = PlacementMode.RightEdgeAlignedBottom;
-                    }
-                    else
+                    if (itemContainer != null)
                     {
                         _toolTip.Placement = PlacementMode.RightEdgeAlignedTop;
+                        var position = itemContainer.TranslatePoint(new Point(0, 0), placementTarget);
+                        if (position.HasValue) yOffset = position.Value.Y;
                     }
-                }
+                    else 
+                    {
+                        //When scrolling down the container is not always ready
+                        //If that happens we align the tooltip at the bottom or top
+                        if (CompletionList.ListBox.FirstVisibleItem < selectedIndex)
+                        {
+                            _toolTip.Placement = PlacementMode.RightEdgeAlignedBottom;
+                        }
+                        else
+                        {
+                            _toolTip.Placement = PlacementMode.RightEdgeAlignedTop;
+                        }
+                    }
                    
-                _toolTip.Offset = new Point(2, yOffset);
-                _toolTip.PlacementTarget = placementTarget;
-                _toolTip.IsOpen = true;
-            }
-            else
-            {
-                _toolTip.IsOpen = false;
-            }
+                    _toolTip.Offset = new Point(2, yOffset);
+                    _toolTip.PlacementTarget = placementTarget;
+                    _toolTip.IsOpen = true;
+                }
+                else
+                {
+                    _toolTip.IsOpen = false;
+                }
+            });
         }
 
 
