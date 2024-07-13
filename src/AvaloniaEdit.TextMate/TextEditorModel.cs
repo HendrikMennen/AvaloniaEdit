@@ -150,7 +150,6 @@ namespace AvaloniaEdit.TextMate
                 InvalidateLineRange(startLine, endLine);
                 return;
             }
-
             // we're in a document change, store the max invalid range
             if (_invalidRange == null)
             {
@@ -168,7 +167,7 @@ namespace AvaloniaEdit.TextMate
 
             try
             {
-                InvalidateLineRange(_invalidRange.StartLine, _invalidRange.EndLine);
+                InvalidateLineRange(_invalidRange.StartLine < _documentSnapshot.LineCount ? _invalidRange.StartLine : _document.LineCount - 1, _invalidRange.EndLine < _documentSnapshot.LineCount ? _invalidRange.EndLine : _documentSnapshot.LineCount - 1);
             }
             finally
             {
