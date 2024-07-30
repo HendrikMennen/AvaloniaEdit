@@ -294,7 +294,7 @@ namespace AvaloniaEdit.Demo
                 {
                     // Whenever a non-letter is typed while the completion window is open,
                     // insert the currently selected element.
-                    _completionWindow.CompletionList.RequestInsertion(e);
+                    // _completionWindow.CompletionList.RequestInsertion(e);
                 }
             }
 
@@ -332,9 +332,9 @@ namespace AvaloniaEdit.Demo
                 data.Add(new MyCompletionData("Item8"));
                 data.Add(new MyCompletionData("Item9"));
                 data.Add(new MyCompletionData("Item10"));
-                data.Add(new MyCompletionData("Item11ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
                 data.Add(new MyCompletionData("Item12"));
                 data.Add(new MyCompletionData("Item13"));
+                data.Add(new MyCompletionData("component c"));
 
 
                 _completionWindow.Show();
