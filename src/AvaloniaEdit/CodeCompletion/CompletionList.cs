@@ -287,7 +287,7 @@ namespace AvaloniaEdit.CodeCompletion
 
             var matchingItems =
                 from item in listToFilter
-                let quality = GetMatchQuality(item.Text, query)
+                let quality = GetMatchQuality(item.InsertText, query)
                 where quality > 0
                 select new { Item = item, Quality = quality };
 
@@ -334,7 +334,7 @@ namespace AvaloniaEdit.CodeCompletion
             double bestPriority = 0;
             for (var i = 0; i < _completionData.Count; ++i)
             {
-                var quality = GetMatchQuality(_completionData[i].Text, query);
+                var quality = GetMatchQuality(_completionData[i].InsertText, query);
                 if (quality < 0)
                     continue;
 

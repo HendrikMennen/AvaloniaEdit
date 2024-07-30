@@ -40,13 +40,13 @@ namespace AvaloniaEdit.CodeCompletion
 		/// <summary>
 		/// Gets the text. This property is used to filter the list of visible elements.
 		/// </summary>
-		string Text { get; }
+		string InsertText { get; }
 		
 		/// <summary>
 		/// The displayed content. This can be the same as 'Text', or a control if
 		/// you want to display rich content.
 		/// </summary>
-		object Content { get; }
+		string Label { get; }
 		
 		/// <summary>
 		/// Gets the description.

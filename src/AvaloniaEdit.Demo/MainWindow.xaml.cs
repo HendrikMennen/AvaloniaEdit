@@ -306,14 +306,14 @@ namespace AvaloniaEdit.Demo
 
         private void textEditor_TextArea_TextEntered(object sender, TextInputEventArgs e)
         {
-            if (e.Text == "M")
+            if (e.Text == "a")
             {
                 _completionWindow = new CompletionWindow(_textEditor)
                 {
                     StartOffset = _textEditor.CaretOffset - 1,
                 };
                 var data = _completionWindow.CompletionList.CompletionData;
-                data.Add(new MyCompletionData("Main"));
+                data.Add(new MyCompletionData("naturalrange"));
 
                 _completionWindow.Show();
             }
@@ -453,17 +453,17 @@ namespace AvaloniaEdit.Demo
         {
             public MyCompletionData(string text)
             {
-                Text = text;
+                InsertText = text;
             }
 
             public IImage Image => null;
 
-            public string Text { get; }
+            public string InsertText { get; }
 
             // Use this property if you want to show a fancy UIElement in the list.
-            public object Content => Text;
+            public string Label => InsertText;
 
-            public object Description => "Description for " + Text;
+            public object Description => "Description for " + Label;
 
             public double Priority { get; } = 0;
 
