@@ -470,7 +470,7 @@ namespace AvaloniaEdit.Demo
             public void Complete(TextArea textArea, ISegment completionSegment,
                 EventArgs insertionRequestEventArgs)
             {
-                textArea.Document.Replace(completionSegment, Text);
+                textArea.Document.Replace(completionSegment, InsertText);
             }
         }
 
