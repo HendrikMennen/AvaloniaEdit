@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:avaloniaedit="using:AvaloniaEdit"
+                    xmlns:snippets="using:AvaloniaEdit.Snippets"
                     x:ClassModifier="internal">
   <ControlTheme x:Key="{x:Type avaloniaedit:TextEditor}" TargetType="avaloniaedit:TextEditor">
     <Setter Property="Template">
@@ -18,5 +19,7 @@
         </Border>
       </ControlTemplate>
     </Setter>
+    <Setter Property="snippets:ReplaceableActiveElement.ReplaceableActiveElementBackgroundBrush"
+            Value="Blue" />
   </ControlTheme>
 </ResourceDictionary>

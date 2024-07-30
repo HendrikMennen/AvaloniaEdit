@@ -18,9 +18,12 @@
 
 using System;
 using System.Linq;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using AvaloniaEdit.Document;
+using AvaloniaEdit.Folding;
 using AvaloniaEdit.Rendering;
 
 namespace AvaloniaEdit.Snippets
@@ -70,6 +73,10 @@ namespace AvaloniaEdit.Snippets
         private readonly int _endOffset;
         private TextAnchor _start;
         private TextAnchor _end;
+        
+        public static readonly AttachedProperty<IBrush> ReplaceableActiveElementBackgroundBrushProperty =
+            AvaloniaProperty.RegisterAttached<ReplaceableActiveElement, Control, IBrush>("ReplaceableActiveElementBackgroundBrush",
+                new ImmutableSolidColorBrush(Colors.LimeGreen, 0.4), inherits: true);
 
         public ReplaceableActiveElement(InsertionContext context, int startOffset, int endOffset)
         {
@@ -99,8 +106,10 @@ namespace AvaloniaEdit.Snippets
             // The InsertionContext will keep us alive as long as the snippet is in interactive mode.
             TextDocumentWeakEventManager.TextChanged.AddHandler(_context.Document, OnDocumentTextChanged);
 
-            _background = new Renderer { Layer = KnownLayer.Background, Element = this };
-            _foreground = new Renderer { Layer = KnownLayer.Text, Element = this };
+            var bg = _context.TextArea.GetValue(ReplaceableActiveElementBackgroundBrushProperty);
+            
+            _background = new Renderer { Layer = KnownLayer.Background, Element = this, BackgroundBrush = bg};
+            _foreground = new Renderer { Layer = KnownLayer.Text, Element = this, BackgroundBrush = bg};
             _context.TextArea.TextView.BackgroundRenderers.Add(_background);
             _context.TextArea.TextView.BackgroundRenderers.Add(_foreground);
             _context.TextArea.Caret.PositionChanged += Caret_PositionChanged;
@@ -170,24 +179,15 @@ namespace AvaloniaEdit.Snippets
 
         private sealed class Renderer : IBackgroundRenderer
         {
-            private static readonly IBrush BackgroundBrush = CreateBackgroundBrush();
-            private static readonly Pen ActiveBorderPen = CreateBorderPen();
-
-            private static IBrush CreateBackgroundBrush()
-            {
-				var b = new ImmutableSolidColorBrush(Colors.LimeGreen, 0.4);
-                return b;
-            }
-
-            private static Pen CreateBorderPen()
-            {
-                var p = new Pen(Brushes.Black, dashStyle: DashStyle.Dot);
-                return p;
-            }
+            private static readonly Pen DefaultActiveBorderPen = new Pen(Brushes.Black, dashStyle: DashStyle.Dot);
 
             internal ReplaceableActiveElement Element;
 
             public KnownLayer Layer { get; set; }
+
+            public IBrush BackgroundBrush { get; set; } = Brushes.White;
+
+            public IPen ActiveBorderPen { get; set; } = DefaultActiveBorderPen;
 
             public void Draw(TextView textView, DrawingContext drawingContext)
             {
@@ -202,8 +202,8 @@ namespace AvaloniaEdit.Snippets
                     if (Layer == KnownLayer.Background)
                     {
                         geoBuilder.AddSegment(textView, s);
-                        var geometry = geoBuilder.CreateGeometry(); 
-                        if(geometry != null)
+                        var geometry = geoBuilder.CreateGeometry();
+                        if (geometry != null)
                         {
                             drawingContext.DrawGeometry(BackgroundBrush, null, geometry);
                         }
@@ -222,8 +222,9 @@ namespace AvaloniaEdit.Snippets
                                     geoBuilder.CloseFigure();
                                 }
                             }
-                            var geometry = geoBuilder.CreateGeometry(); 
-                            if(geometry != null)
+
+                            var geometry = geoBuilder.CreateGeometry();
+                            if (geometry != null)
                             {
                                 drawingContext.DrawGeometry(null, ActiveBorderPen, geometry);
                             }
