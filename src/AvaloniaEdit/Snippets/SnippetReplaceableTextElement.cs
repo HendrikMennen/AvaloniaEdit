@@ -66,7 +66,7 @@ namespace AvaloniaEdit.Snippets
         event EventHandler TextChanged;
     }
 
-    internal sealed class ReplaceableActiveElement : IReplaceableActiveElement
+    public sealed class ReplaceableActiveElement : IReplaceableActiveElement
     {
         private readonly InsertionContext _context;
         private readonly int _startOffset;
