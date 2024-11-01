@@ -2,8 +2,8 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AvaloniaVersion>11.1.0</AvaloniaVersion>
-    <AvaloniaSampleVersion>11.1.0</AvaloniaSampleVersion>
+    <AvaloniaVersion>11.2.0</AvaloniaVersion>
+    <AvaloniaSampleVersion>11.2.0</AvaloniaSampleVersion>
     <TextMateSharpVersion>1.0.57</TextMateSharpVersion>
     <VersionSuffix>beta</VersionSuffix>
 
@@ -11,7 +11,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
-    <Version>11.1.0.4</Version>
+    <Version>11.2.0</Version>
     <RepositoryUrl>https://github.com/HendrikMennen/AvaloniaEdit/</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon.png</PackageIcon>
